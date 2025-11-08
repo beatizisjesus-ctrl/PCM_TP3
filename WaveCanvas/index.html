@@ -16,8 +16,19 @@
         <section id="controls">
           <div class="control-group">
             <h3>Controlos de Áudio</h3>
-            <button id="startMic" class="btn-primary">Iniciar Microfone</button>
-            <button id="stopAudio" class="btn-secondary" disabled>
+            <button
+              id="startMic"
+              class="btn-primary"
+              onclick="app.startMicrophone()"
+            >
+              Iniciar Microfone
+            </button>
+            <button
+              id="stopAudio"
+              class="btn-secondary"
+              onclick="app.stopAudio()"
+              disabled
+            >
               Parar Áudio
             </button>
             <input type="file" id="audioFile" accept="audio/*" />
@@ -40,7 +51,12 @@
         </section>
 
         <section id="visualization-area">
+          <!-- Canvas principal, para desenhar as partículas -->
           <canvas id="audioCanvas"></canvas>
+          <!-- Canvas para espectro de frequência -->
+          <canvas id="frequencyCanvas" width="800" height="200"></canvas>
+          <!-- Canvas para waveform -->
+          <canvas id="waveformCanvas" width="800" height="200"></canvas>
           <div id="audioInfo">
             <p id="audioStatus">Áudio: Parado</p>
             <p id="audioLevel">Nível: 0%</p>
@@ -63,7 +79,7 @@
         </div>
       </div>
     </div>
-
+    <!-- Foram adicionadas as classes criadas -->
     <script src="Js/app.js"></script>
     <script src="Js/AudioProcessor.js"></script>
     <script src="Js/AudioVisualization.js"></script>

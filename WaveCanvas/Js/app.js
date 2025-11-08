@@ -1,11 +1,14 @@
 // Classe principal da aplicação
 class App {
   constructor() {
-    this.audioProcessor = new AudioProcessor();
-    this.visualizationEngine = new VisualizationEngine("audioCanvas");
-    this.uiManager = new UIManager(this);
+    this.uiManager = new UIManager(this); //para o uimanager saber que app existe e tbm usar os objetos daqui
+    this.audioProcessor = new AudioProcessor(this);
+    this.visualizationEngine = new VisualizationEngine(
+      "audioCanvas",
+      this.audioProcessor
+    );
     this.exportManager = new ExportManager(this.visualizationEngine);
-
+    this.setVisualization("spectrum"); //para começar
     // Inicialização
     this.init();
   }
@@ -17,9 +20,18 @@ class App {
 
   startMicrophone() {
     // TODO: iniciar captura do microfone
-    this.uiManager.setButtonStates(true);
-    console.log("Iniciando microfone...");
-    this.audioProcessor.startMicrophone();
+    //maneira de se lidar com a promise
+    this.audioProcessor
+      .startMicrophone()
+      .then((stream) => {
+        this.uiManager.setButtonStates(true);
+        this.visualizationEngine.start();
+        console.log("Iniciando microfone...");
+      })
+      .catch((error) => {
+        this.uiManager.showError(error);
+        this.uiManager.setButtonStates(false);
+      });
   }
 
   loadAudioFile(file) {
@@ -30,10 +42,15 @@ class App {
   stopAudio() {
     // TODO: parar áudio
     console.log("Parando áudio...");
+    this.audioProcessor.stop(); //para o processamento e audio
+    this.visualizationEngine.stop(); //para o desnho
+    this.uiManager.setButtonStates(false); //desativa o stop e ativa o start microfone
   }
 
   setVisualization(type) {
     // TODO: definir tipo de visualização
+    //envia-se a escolha do utilizador para o Vis.Engine
+    this.visualizationEngine.setVisualization(type);
     console.log(`Definindo visualização: ${type}`);
   }
 

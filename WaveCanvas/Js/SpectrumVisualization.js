@@ -7,6 +7,7 @@ class SpectrumVisualization extends AudioVisualization {
   }
 
   draw() {
+    console.log(this.audioProcessor.getFrequencyData());
     // TODO: desenhar espectro de frequências
     this.clearCanvas();
 

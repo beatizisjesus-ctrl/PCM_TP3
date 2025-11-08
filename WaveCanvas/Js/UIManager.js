@@ -4,7 +4,10 @@ class UIManager {
     this.app = app;
     this.visualizationEngine = app.visualizationEngine;
     this.audioProcessor = app.audioProcessor;
-
+    this.freqCanvas = document.getElementById("frequencyCanvas");
+    this.freqCtx = this.freqCanvas.getContext("2d");
+    this.waveCanvas = document.getElementById("waveformCanvas");
+    this.waveCtx = this.waveCanvas.getContext("2d");
     // Inicializar interface
     this.setupEventListeners();
   }
@@ -48,7 +51,7 @@ class UIManager {
     errorMessage.textContent = message;
     errorModal.classList.remove("hidden");
 
-    // Fechar modal ao clicar no X
+    // Fechar modal ao clicar no X(close representa x no html)
     document.querySelector(".close").onclick = () => {
       errorModal.classList.add("hidden");
     };
@@ -77,7 +80,9 @@ class UIManager {
       }
     });
 
+    //muda o tipo de visualizaçao consoante a escolha do utilizador:
     document
+      //envia o que foi escolhido pelo o utilizador para a app
       .getElementById("visualizationType")
       .addEventListener("change", (e) => {
         this.app.setVisualization(e.target.value);

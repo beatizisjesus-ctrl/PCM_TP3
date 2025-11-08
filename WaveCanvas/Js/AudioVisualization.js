@@ -27,6 +27,8 @@ class AudioVisualization {
 
   update() {
     // TODO: atualizar estado da visualização
+    this.draw();
+    this.audioProcessor.update();
     this.frameCount++;
   }
 
