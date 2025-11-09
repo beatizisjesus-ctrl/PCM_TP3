@@ -1,20 +1,22 @@
 class AudioProcessor {
   constructor() {
+    // Contextos separados
+    this.micContext = new AudioContext();
+    this.fileContext = new AudioContext();
     this.analyser = null;
     this.mediaStream = null;
     //define que sao arrays do tipo 8 com o tamanho errado, ira ser definido em baixo
     this.frequencyData = new Uint8Array();
     this.waveformData = new Uint8Array();
     this.isPlaying = false;
-    this.audioContext = new AudioContext();
   }
 
   async startMicrophone() {
     // TODO: iniciar captura do microfone
     console.log("Iniciando captura do microfone...");
 
-    if (this.audioContext.state === "suspended") {
-      await this.audioContext.resume();
+    if (this.micContext.state === "suspended") {
+      await this.micContext.resume();
     }
 
     return new Promise((resolve, reject) => {
@@ -24,11 +26,11 @@ class AudioProcessor {
         })
         .then((stream) => {
           // Transforma um media stream numa fonte de audio que o programa possa manipular
-          const mediaSource = this.audioContext.createMediaStreamSource(stream);
+          const mediaSource = this.micContext.createMediaStreamSource(stream);
           this.mediaSourceMicrophone = mediaSource; //microfone
           this.stream = stream;
           //configurar o analyzer:
-          this.analyser = this.audioContext.createAnalyser();
+          this.analyser = this.micContext.createAnalyser();
           this.analyser.fftSize = 2048; //define-se o tamanho da janela de análise de frequência.
           //O analyser observa o sinal de audio e fornece métodos para preencher arrays com os dados do áudio no momento atual:
           //frequencyData → armazena intensidade de cada faixa de frequência (espectro).
@@ -38,7 +40,7 @@ class AudioProcessor {
           // liga a fonte de áudio ao analyser
           this.mediaSourceMicrophone.connect(this.analyser);
           //destinatin, sai o audio
-          this.analyser.connect(this.audioContext.destination);
+          this.analyser.connect(this.micContext.destination);
           this.mediaStreamMicrophone = this.stream; //stream do microfone
           this.isPlaying = true;
           //iniciar loop de atualizaçao
@@ -54,33 +56,38 @@ class AudioProcessor {
   async loadAudioFile(file) {
     // TODO: carregar ficheiro de áudio
     console.log("Carregando ficheiro de áudio...");
-    if (this.audioContext.state === "suspended") {
-      await this.audioContext.resume();
+    if (this.fileContext.state === "suspended") {
+      await this.fileContext.resume();
     }
 
     return new Promise((resolve, reject) => {
       file
         .arrayBuffer()
-        .then((arrayBuffer) => this.audioContext.decodeAudioData(arrayBuffer)) //decodifica os bytes do ficheiro para um AudioBuffer, que é o formato que o AudioContext consegue reproduzir e processar.
+        .then((arrayBuffer) => this.fileContext.decodeAudioData(arrayBuffer)) //decodifica os bytes do ficheiro para um AudioBuffer, que é o formato que o AudioContext consegue reproduzir e processar.
         .then((audioBuffer) => {
           // Criar uma fonte de áudio a partir do buffer
-          const bufferSource = this.audioContext.createBufferSource();
+          const bufferSource = this.fileContext.createBufferSource();
           bufferSource.buffer = audioBuffer;
 
           // Criar (ou recriar) o analyser
-          this.analyser = this.audioContext.createAnalyser();
+          this.analyser = this.fileContext.createAnalyser();
           this.analyser.fftSize = 2048;
           this.frequencyData = new Uint8Array(this.analyser.frequencyBinCount);
           this.waveformData = new Uint8Array(this.analyser.fftSize);
 
           // Conectar a destination(playback)
           bufferSource.connect(this.analyser);
-          this.analyser.connect(this.audioContext.destination);
+          this.analyser.connect(this.fileContext.destination);
 
           // Guardar referências
           this.mediaSourceBuffer = bufferSource;
           this.isPlaying = true;
 
+          //quando acabar o audio, para
+          this.mediaSourceBuffer.onended = () => {
+            console.log("Ficheiro terminou, parando automaticamente...");
+            this.stop(); // isso vai parar áudio e visualização
+          };
           // Iniciar reprodução
           this.mediaSourceBuffer.start();
 
@@ -127,8 +134,8 @@ class AudioProcessor {
     }
 
     // Suspender AudioContext
-    if (this.audioContext && this.audioContext.state === "running") {
-      this.audioContext.suspend().then(() => {
+    if (this.micContext && this.micContext.state === "running") {
+      this.micContext.suspend().then(() => {
         console.log("AudioContext suspenso.");
       });
     }
