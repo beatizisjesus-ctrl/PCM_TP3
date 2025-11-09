@@ -65,9 +65,21 @@ class AudioProcessor {
         .arrayBuffer()
         .then((arrayBuffer) => this.fileContext.decodeAudioData(arrayBuffer)) //decodifica os bytes do ficheiro para um AudioBuffer, que é o formato que o AudioContext consegue reproduzir e processar.
         .then((audioBuffer) => {
+          //guardar aduiBuffer decodificado
+          this.audioBuffer = audioBuffer;
+
+          // Antes de criar bufferSource
+          if (this.mediaSourceBuffer) {
+            try {
+              this.mediaSourceBuffer.stop();
+            } catch (e) {}
+            this.mediaSourceBuffer.disconnect();
+          }
+
           // Criar uma fonte de áudio a partir do buffer
           const bufferSource = this.fileContext.createBufferSource();
-          bufferSource.buffer = audioBuffer;
+          bufferSource.buffer = this.audioBuffer; //mantem-se o mm audioBuffer decodificado para se poder reproudzir varios fiecheiros audio, usando o mm buffer
+          this.mediaSourceBuffer = bufferSource; //atualiza-se mediaSourceBuffer com uma novo no de sourceBuffer
 
           // Criar (ou recriar) o analyser
           this.analyser = this.fileContext.createAnalyser();
