@@ -17,8 +17,10 @@ class SpectrumVisualization extends AudioVisualization {
       : this.testData;
     const barWidth = this.canvas.width / data.length;
 
+    //desenhar cada barra
     for (let i = 0; i < data.length; i++) {
-      const barHeight = (data[i] / 255) * this.canvas.height;
+      const scale = 2; //para subir as barras
+      const barHeight = (data[i] / 255) * this.canvas.height * scale;
       const x = i * barWidth;
       const y = this.canvas.height - barHeight;
 

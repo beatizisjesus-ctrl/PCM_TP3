@@ -48,7 +48,9 @@ class ParticleVisualization extends AudioVisualization {
       : this.testData;
     const audioLevel = this.audioProcessor
       ? this.audioProcessor.calculateAudioLevel()
-      : 0.5;
+      : 1.0;
+
+    console.log(audioLevel.toFixed(3));
 
     for (let i = 0; i < this.particles.length; i++) {
       const p = this.particles[i];
@@ -66,12 +68,16 @@ class ParticleVisualization extends AudioVisualization {
         const freqIndex = Math.floor((i / this.particles.length) * data.length);
         const intensity = data[freqIndex] / 255;
 
-        p.vx += (Math.random() - 0.5) * intensity * 0.5;
-        p.vy += (Math.random() - 0.5) * intensity * 0.5;
+        //para tornar mais dinamico, assim ,mm que os valores sejam baixos, deixam de ser
+        const freqContribution = intensity * 5; // depende do espectro
+        const levelContribution = audioLevel * 10; // volume total
+        p.vx += (Math.random() - 0.5) * (freqContribution + levelContribution);
+        p.vy += (Math.random() - 0.5) * (freqContribution + levelContribution);
 
         // Limitar velocidade
         const speed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
-        const maxSpeed = 2 + audioLevel * 3;
+        //mudou-se os valores para aumentar a diferença entre som e sem som
+        const maxSpeed = 1 + audioLevel * 10;
         if (speed > maxSpeed) {
           p.vx = (p.vx / speed) * maxSpeed;
           p.vy = (p.vy / speed) * maxSpeed;

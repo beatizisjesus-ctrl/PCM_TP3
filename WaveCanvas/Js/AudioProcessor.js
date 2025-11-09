@@ -176,6 +176,27 @@ class AudioProcessor {
   }
 
   calculateAudioLevel() {
-    return 0;
+    if (!this.analyser || !this.waveformData.length) return 0;
+
+    // Obter a forma de onda atual (valores 0–255)
+    this.analyser.getByteTimeDomainData(this.waveformData);
+
+    // Calcular desvio da média (128 ≈ linha central do sinal)
+    let sum = 0;
+    for (let i = 0; i < this.waveformData.length; i++) {
+      const deviation = this.waveformData[i] - 128;
+      sum += deviation * deviation;
+    }
+
+    // Média quadrática (RMS)
+    const rms = Math.sqrt(sum / this.waveformData.length);
+
+    // Normalizar para 0–1 (128 é amplitude máxima possível)
+    const normalizedLevel = rms / 128;
+
+    // Suavizar o resultado (evita saltos bruscos)
+    
+
+    return normalizedLevel;
   }
 }
