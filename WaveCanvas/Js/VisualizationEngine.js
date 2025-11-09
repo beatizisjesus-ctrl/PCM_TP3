@@ -10,6 +10,10 @@ class VisualizationEngine {
     this.audioProcessor = audioProcessor;
 
     // Inicializar visualizações
+    this.resize();
+
+    // Adiciona listener da janela
+    window.addEventListener("resize", () => this.resize());
     this.initVisualizations();
   }
 
@@ -31,13 +35,8 @@ class VisualizationEngine {
 
   setVisualization(type) {
     console.log(`Definindo visualização: ${type}`);
+    this.currentVisualization = null;
     const viz = this.visualizations.get(type);
-    //caso haja algum erro
-    if (!viz) {
-      console.warn(`Visualização "${type}" não encontrada`);
-      return false;
-    }
-    //dizer a visulizaçao
     this.currentVisualization = viz;
     console.log(`Visualização definida: ${type}`);
     return true;
@@ -46,6 +45,7 @@ class VisualizationEngine {
   start() {
     // TODO: iniciar animação
     this.isRunning = true;
+
     console.log("Iniciando motor de visualização...");
     if (!this.currentVisualization) {
       console.warn("Nenhuma visualização definida!");
@@ -54,6 +54,8 @@ class VisualizationEngine {
 
     // Pede que o proximo frame use Animacao, para tornar o loop continuo.
     this.animationId = requestAnimationFrame(() => this.updateLoop());
+
+    //FALTA ATUALIZAR PROPERTIES PANEL
 
     console.log("Motor de visualização iniciado.");
   }
@@ -65,7 +67,6 @@ class VisualizationEngine {
   }
 
   stop() {
-    //FUNCIONA
     // TODO: parar animação
     console.log("Parando motor de visualização...");
     this.isRunning = false;
@@ -78,6 +79,20 @@ class VisualizationEngine {
 
   resize() {
     // TODO: redimensionar canvas
+    if (!this.canvas) return;
+
+    // Ajusta o canvas ao tamanho do container (ou da janela)
+    this.canvas.width = this.canvas.clientWidth;
+    this.canvas.height = this.canvas.clientHeight;
+
+    // Se for preiciso redimensionar a visualizaçao atual
+    if (this.currentVisualization?.resize) {
+      this.currentVisualization.resize(this.canvas.width, this.canvas.height);
+    }
+
+    console.log(
+      `Canvas redimensionado: ${this.canvas.width}x${this.canvas.height}`
+    );
   }
 
   getVisualizationProperties() {

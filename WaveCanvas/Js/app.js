@@ -2,7 +2,7 @@
 class App {
   constructor() {
     this.uiManager = new UIManager(this); //para o uimanager saber que app existe e tbm usar os objetos daqui
-    this.audioProcessor = new AudioProcessor(this);
+    this.audioProcessor = new AudioProcessor();
     this.visualizationEngine = new VisualizationEngine(
       "audioCanvas",
       this.audioProcessor
@@ -37,6 +37,16 @@ class App {
   loadAudioFile(file) {
     // TODO: carregar ficheiro de áudio
     console.log("Carregando ficheiro de áudio...");
+
+    this.audioProcessor
+      .loadAudioFile(file)
+      .then(() => {
+        this.visualizationEngine.start();
+        console.log("Ficheiro de áudio iniciado!");
+      })
+      .catch((error) => {
+        this.uiManager.showError(error);
+      });
   }
 
   stopAudio() {
@@ -49,7 +59,14 @@ class App {
 
   setVisualization(type) {
     // TODO: definir tipo de visualização
-    //envia-se a escolha do utilizador para o Vis.Engine
+    const viz = this.visualizationEngine.visualizations.get(type);
+    //caso nao exista
+    if (!viz) {
+      console.warn(`Visualização "${type}" não encontrada`);
+      this.uiManager.showError(`Visualização "${type}" não encontrada`);
+      return false;
+    }
+    //Se existir, envia-se a escolha do utilizador para o Vis.Engine
     this.visualizationEngine.setVisualization(type);
     console.log(`Definindo visualização: ${type}`);
   }

@@ -26,7 +26,6 @@ class SpectrumVisualization extends AudioVisualization {
       this.ctx.fillRect(x, y, barWidth - 1, barHeight);
     }
   }
-
   getProperties() {
     // TODO: obter propriedades específicas
     return super.getProperties();

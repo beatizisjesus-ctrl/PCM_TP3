@@ -1,5 +1,5 @@
 class AudioProcessor {
-  constructor(app) {
+  constructor() {
     this.analyser = null;
     this.mediaStream = null;
     //define que sao arrays do tipo 8 com o tamanho errado, ira ser definido em baixo
@@ -7,7 +7,6 @@ class AudioProcessor {
     this.waveformData = new Uint8Array();
     this.isPlaying = false;
     this.audioContext = new AudioContext();
-    //usar objetos da app
   }
 
   async startMicrophone() {
@@ -26,7 +25,7 @@ class AudioProcessor {
         .then((stream) => {
           // Transforma um media stream numa fonte de audio que o programa possa manipular
           const mediaSource = this.audioContext.createMediaStreamSource(stream);
-          this.mediaSource = mediaSource;
+          this.mediaSourceMicrophone = mediaSource; //microfone
           this.stream = stream;
           //configurar o analyzer:
           this.analyser = this.audioContext.createAnalyser();
@@ -37,10 +36,10 @@ class AudioProcessor {
           this.frequencyData = new Uint8Array(this.analyser.frequencyBinCount); //Cria-se um array de 8 bits (0–255) para armazenar os dados de frequência.
           this.waveformData = new Uint8Array(this.analyser.fftSize); //o mm do de cima, mas para a forma de onda de audio
           // liga a fonte de áudio ao analyser
-          mediaSource.connect(this.analyser);
+          this.mediaSourceMicrophone.connect(this.analyser);
           //destinatin, sai o audio
           this.analyser.connect(this.audioContext.destination);
-          this.mediaStream = this.stream;
+          this.mediaStreamMicrophone = this.stream; //stream do microfone
           this.isPlaying = true;
           //iniciar loop de atualizaçao
           this.update();
@@ -55,7 +54,46 @@ class AudioProcessor {
   async loadAudioFile(file) {
     // TODO: carregar ficheiro de áudio
     console.log("Carregando ficheiro de áudio...");
-    // Devolver Promise
+    if (this.audioContext.state === "suspended") {
+      await this.audioContext.resume();
+    }
+
+    return new Promise((resolve, reject) => {
+      file
+        .arrayBuffer()
+        .then((arrayBuffer) => this.audioContext.decodeAudioData(arrayBuffer)) //decodifica os bytes do ficheiro para um AudioBuffer, que é o formato que o AudioContext consegue reproduzir e processar.
+        .then((audioBuffer) => {
+          // Criar uma fonte de áudio a partir do buffer
+          const bufferSource = this.audioContext.createBufferSource();
+          bufferSource.buffer = audioBuffer;
+
+          // Criar (ou recriar) o analyser
+          this.analyser = this.audioContext.createAnalyser();
+          this.analyser.fftSize = 2048;
+          this.frequencyData = new Uint8Array(this.analyser.frequencyBinCount);
+          this.waveformData = new Uint8Array(this.analyser.fftSize);
+
+          // Conectar a destination(playback)
+          bufferSource.connect(this.analyser);
+          this.analyser.connect(this.audioContext.destination);
+
+          // Guardar referências
+          this.mediaSourceBuffer = bufferSource;
+          this.isPlaying = true;
+
+          // Iniciar reprodução
+          this.mediaSourceBuffer.start();
+
+          // Atualização contínua (para o visualizador)
+          this.update();
+
+          console.log("Ficheiro de áudio a tocar...");
+          resolve("Ficheiro carregado com sucesso");
+        })
+        .catch((error) => {
+          reject("Erro ao carregar ficheiro de áudio: " + error);
+        });
+    });
   }
 
   stop() {
@@ -63,33 +101,39 @@ class AudioProcessor {
     console.log("Parando processamento de áudio...");
     if (!this.isPlaying) return;
 
-    //Todos os tracks(qu representam dados do microfone) do mediaStream sao parados
-    if (this.mediaStream)
-      this.mediaStream.getTracks().forEach((track) => track.stop());
-
-    //Desligar todas as conexões de áudio
-    try {
-      if (this.analyser) {
-        this.analyser.disconnect();
-      }
-      if (this.mediaSource) {
-        this.mediaSource.disconnect();
-      }
-    } catch (e) {
-      console.warn("Erro ao desconectar nós de áudio:", e);
+    // Parar microfone
+    if (this.mediaStreamMicrophone) {
+      this.mediaStreamMicrophone.getTracks().forEach((track) => track.stop());
+      this.mediaSourceMicrophone?.disconnect();
+      this.mediaStreamMicrophone = null;
+      this.mediaSourceMicrophone = null;
     }
 
-    //Suspender o contexto de áudio (para parar o som imediatamente)
+    // Parar ficheiro de áudio
+    if (this.mediaSourceBuffer) {
+      try {
+        this.mediaSourceBuffer.stop();
+      } catch (e) {
+        //pode ja estar parado
+      }
+      this.mediaSourceBuffer.disconnect();
+      this.mediaSourceBuffer = null;
+    }
+
+    // Desconectar analyser
+    if (this.analyser) {
+      this.analyser.disconnect();
+      this.analyser = null;
+    }
+
+    // Suspender AudioContext
     if (this.audioContext && this.audioContext.state === "running") {
       this.audioContext.suspend().then(() => {
         console.log("AudioContext suspenso.");
       });
     }
-    // Marca que não está mais a tocar
+
     this.isPlaying = false;
-    this.analyser = null;
-    this.mediaSource = null;
-    this.mediaStream = null;
     this.frequencyData = new Uint8Array();
     this.waveformData = new Uint8Array();
 
