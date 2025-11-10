@@ -195,7 +195,6 @@ class AudioProcessor {
     const normalizedLevel = rms / 128;
 
     // Suavizar o resultado (evita saltos bruscos)
-    
 
     return normalizedLevel;
   }

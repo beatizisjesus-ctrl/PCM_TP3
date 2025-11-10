@@ -5,6 +5,12 @@ class ParticleVisualization extends AudioVisualization {
     this.particles = [];
     this.lastTime = 0;
 
+    //Inicializar properties
+    this.properties = {
+      particleCount: 50,
+      particleRadius: 2,
+      connectionDistance: 100,
+    };
     // Inicializar partículas
     this.initParticles();
   }
@@ -12,6 +18,7 @@ class ParticleVisualization extends AudioVisualization {
   draw() {
     // TODO: desenhar partículas
     this.clearCanvas();
+    this.drawGrid();
     this.drawParticles();
     this.drawConnections();
   }
@@ -24,7 +31,7 @@ class ParticleVisualization extends AudioVisualization {
 
   getProperties() {
     // TODO: obter propriedades específicas
-    return super.getProperties();
+    return super.getProperties(); //na classe mae existe este metodo get.properties que vai buscar as propriedades especificas de cada visualizaçao
   }
 
   initParticles() {

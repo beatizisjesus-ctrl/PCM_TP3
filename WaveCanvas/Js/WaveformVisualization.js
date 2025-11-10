@@ -3,11 +3,16 @@ class WaveformVisualization extends AudioVisualization {
     super(canvas, audioProcessor);
     this.name = "Forma de Onda";
     // Inicializar propriedades específicas
+    this.properties = {
+      lineWidth: 2,
+      lineColor: "#4cc9f0",
+    };
   }
 
   draw() {
     // TODO: desenhar forma de onda
     this.clearCanvas();
+    this.drawGrid();
 
     // Implementação básica para teste
     const data = this.audioProcessor

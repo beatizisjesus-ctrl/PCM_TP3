@@ -45,6 +45,7 @@ class AudioVisualization {
 
   updateProperty(property, value) {
     // TODO: atualizar propriedade
+    //Por exemplo: "lineWidth" e 3. Atualiza o que ja foi defenido de modo a nao criar propriedadees novas por engano.
     if (this.properties.hasOwnProperty(property)) {
       this.properties[property] = value;
     }
@@ -57,6 +58,30 @@ class AudioVisualization {
 
   drawGrid() {
     // TODO: desenhar grelha de fundo
+    const width = this.canvas.width;
+    const height = this.canvas.height;
+    const gridSize = 50; // tamanho de cada célula da grelha (podes mudar)
+
+    // Define cor e espessura das linhas
+    this.ctx.strokeStyle = "#ccc";
+    this.ctx.lineWidth = 0.5;
+
+    this.ctx.beginPath();
+
+    // Linhas verticais
+    for (let x = 0; x <= width; x += gridSize) {
+      this.ctx.moveTo(x, 0);
+      this.ctx.lineTo(x, height);
+    }
+
+    // Linhas horizontais
+    for (let y = 0; y <= height; y += gridSize) {
+      this.ctx.moveTo(0, y);
+      this.ctx.lineTo(width, y);
+    }
+
+    this.ctx.stroke(); // desenha as linhas
+    this.ctx.closePath();
   }
 
   createGradient() {
