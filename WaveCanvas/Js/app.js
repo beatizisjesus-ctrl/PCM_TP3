@@ -73,12 +73,34 @@ class App {
 
   exportFrame() {
     // TODO: exportar frame atual
-    console.log("Exportando frame...");
   }
 
   destroy() {
     // TODO: limpar recursos
     console.log("Destruindo aplicação...");
+
+    // Para qualquer áudio em execução
+    if (this.audioProcessor.isPlaying) {
+      this.audioProcessor.stop();
+    }
+
+    // Para a visualização
+    if (this.visualizationEngine.isRunning) {
+      this.visualizationEngine.stop();
+    }
+
+    // Remove event listeners do UIManager (assumindo que tens uma função cleanup)
+    if (this.uiManager.cleanupEventListeners) {
+      this.uiManager.cleanupEventListeners();
+    }
+
+    // Limpa referências para permitir garbage collection
+    this.uiManager = null;
+    this.audioProcessor = null;
+    this.visualizationEngine = null;
+    this.exportManager = null;
+
+    console.log("Aplicação destruída e recursos libertos.");
   }
 }
 

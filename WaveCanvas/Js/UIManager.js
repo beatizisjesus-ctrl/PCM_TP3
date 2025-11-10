@@ -99,6 +99,19 @@ class UIManager {
 
   setupAudioLevels() {
     // TODO: configurar monitorização de níveis de áudio
+    const update = () => {
+      if (this.audioProcessor.isPlaying) {
+        const level = this.audioProcessor.calculateAudioLevel();
+        this.updateAudioInfo({
+          status: "Ativo",
+          level: Math.round(level * 100),
+        });
+      }
+      requestAnimationFrame(update);
+    };
+
+    // Iniciar loop de monitorização
+    update();
   }
 
   createPropertyControl(property, value, min, max, step) {

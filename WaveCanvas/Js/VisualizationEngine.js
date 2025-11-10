@@ -97,11 +97,23 @@ class VisualizationEngine {
 
   getVisualizationProperties() {
     // TODO: obter propriedades da visualização atual
-    return {};
+
+    if (!this.currentVisualization) {
+      console.warn("Nenhuma visualização ativa para obter propriedades.");
+      return {};
+    }
+    return this.currentVisualization.getProperties();
   }
 
   updateVisualizationProperty(property, value) {
-    // TODO: atualizar propriedade da visualização
+    if (!this.currentVisualization) {
+      console.warn("Nenhuma visualização ativa para atualizar propriedades.");
+      return;
+    }
+
+    // Atualiza a propriedade na visualização atual
+    this.currentVisualization.updateProperty(property, value);
+
     console.log(`Atualizando propriedade: ${property} = ${value}`);
   }
 }
