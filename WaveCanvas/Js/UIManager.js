@@ -4,16 +4,74 @@ class UIManager {
     this.app = app;
     this.visualizationEngine = app.visualizationEngine;
     this.audioProcessor = app.audioProcessor;
-    this.freqCanvas = document.getElementById("frequencyCanvas");
-    this.freqCtx = this.freqCanvas.getContext("2d");
-    this.waveCanvas = document.getElementById("waveformCanvas");
-    this.waveCtx = this.waveCanvas.getContext("2d");
     // Inicializar interface
     this.setupEventListeners();
   }
 
   updatePropertiesPanel() {
     // TODO: atualizar painel de propriedades
+    document.getElementById("properties-container").innerHTML = "";
+    if (!this.visualizationEngine.currentVisualization) {
+      console.warn(
+        "Nenhuma visualização ativa — painel de propriedades vazio."
+      );
+      return;
+    }
+    if (
+      this.visualizationEngine.currentVisualization.name === "Forma de Onda"
+    ) {
+      const line_Width = this.createPropertyControl("lineWidth", 4, 1, 5, 1);
+      //const line_Color = this.createPropertyControl("lineColor", 4, 1, 5, 1);
+      document.getElementById("properties-container").appendChild(line_Width);
+      //document.getElementById("properties-container").appendChild(line_Color);
+    } else if (
+      this.visualizationEngine.currentVisualization.name ===
+      "Espectro de Frequências"
+    ) {
+      const bar_WidthScale = this.createPropertyControl(
+        "barWidthScale",
+        3,
+        1,
+        6,
+        0.01
+      );
+      document
+        .getElementById("properties-container")
+        .appendChild(bar_WidthScale);
+    } else {
+      // propriedades das particulas
+      const particle_Count = this.createPropertyControl(
+        "particleCount",
+        4,
+        1,
+        5,
+        1
+      );
+      const particle_Radius = this.createPropertyControl(
+        "particleRadius",
+        2,
+        2,
+        6,
+        1
+      );
+      const connection_Distance = this.createPropertyControl(
+        "connectionDistance",
+        100,
+        80,
+        150,
+        20
+      );
+      document
+        .getElementById("properties-container")
+        .appendChild(particle_Count);
+      document
+        .getElementById("properties-container")
+        .appendChild(particle_Radius);
+      document
+        .getElementById("properties-container")
+        .appendChild(connection_Distance);
+    }
+
     console.log("Atualizando painel de propriedades...");
   }
 
@@ -86,6 +144,7 @@ class UIManager {
       .getElementById("visualizationType")
       .addEventListener("change", (e) => {
         this.app.setVisualization(e.target.value);
+        this.updatePropertiesPanel();
       });
 
     document.getElementById("exportPNG").addEventListener("click", () => {
@@ -124,7 +183,7 @@ class UIManager {
     label.htmlFor = `prop-${property}`;
 
     const input = document.createElement("input");
-    input.type = "range";
+    input.type = "range"; //slider
     input.id = `prop-${property}`;
     input.min = min;
     input.max = max;

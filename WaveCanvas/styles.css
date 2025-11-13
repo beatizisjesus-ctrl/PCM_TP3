@@ -191,3 +191,11 @@ select {
 .hidden {
   display: none;
 }
+
+@media (max-width: 768px) {
+  main {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+}

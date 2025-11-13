@@ -42,7 +42,7 @@ class ParticleVisualization extends AudioVisualization {
         y: Math.random() * this.canvas.height,
         vx: (Math.random() - 0.5) * 2,
         vy: (Math.random() - 0.5) * 2,
-        radius: Math.random() * 3 + 1,
+        radius: this.properties.particleRadius || 2,
         color: `hsl(${Math.random() * 360}, 100%, 50%)`,
       });
     }
@@ -75,6 +75,7 @@ class ParticleVisualization extends AudioVisualization {
         const freqIndex = Math.floor((i / this.particles.length) * data.length);
         const intensity = data[freqIndex] / 255;
 
+        //MUDANÇA
         //para tornar mais dinamico, assim ,mm que os valores sejam baixos, deixam de ser
         const freqContribution = intensity * 5; // depende do espectro
         const levelContribution = audioLevel * 10; // volume total
@@ -83,6 +84,7 @@ class ParticleVisualization extends AudioVisualization {
 
         // Limitar velocidade
         const speed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
+        //MUDANÇA
         //mudou-se os valores para aumentar a diferença entre som e sem som
         const maxSpeed = 1 + audioLevel * 10;
         if (speed > maxSpeed) {
@@ -95,6 +97,7 @@ class ParticleVisualization extends AudioVisualization {
 
   drawParticles() {
     // TODO: desenhar partículas
+
     for (const p of this.particles) {
       this.ctx.beginPath();
       this.ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
@@ -105,7 +108,7 @@ class ParticleVisualization extends AudioVisualization {
 
   drawConnections() {
     // TODO: desenhar conexões entre partículas
-    const maxDistance = 100;
+    const maxDistance = this.properties.connectionDistance || 100;
 
     for (let i = 0; i < this.particles.length; i++) {
       for (let j = i + 1; j < this.particles.length; j++) {

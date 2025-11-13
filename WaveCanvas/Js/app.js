@@ -1,13 +1,13 @@
 // Classe principal da aplicação
 class App {
   constructor() {
-    this.uiManager = new UIManager(this); //para o uimanager saber que app existe e tbm usar os objetos daqui
     this.audioProcessor = new AudioProcessor();
     this.visualizationEngine = new VisualizationEngine(
       "audioCanvas",
       this.audioProcessor
     );
     this.exportManager = new ExportManager(this.visualizationEngine);
+    this.uiManager = new UIManager(this); //para o uimanager saber que app existe e tbm usar os objetos daqui
     this.setVisualization("spectrum"); //para começar
     // Inicialização
     this.init();
@@ -68,12 +68,10 @@ class App {
     }
     //Se existir, envia-se a escolha do utilizador para o Vis.Engine
     this.visualizationEngine.setVisualization(type);
+    this.uiManager.updatePropertiesPanel();
     console.log(`Definindo visualização: ${type}`);
   }
 
-  exportFrame() {
-    // TODO: exportar frame atual
-  }
 
   destroy() {
     // TODO: limpar recursos

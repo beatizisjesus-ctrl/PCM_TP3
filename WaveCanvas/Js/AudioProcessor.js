@@ -175,6 +175,7 @@ class AudioProcessor {
     return this.waveformData;
   }
 
+  //ParticleVisualization usa isto para chamar fazer a visualização por partículas
   calculateAudioLevel() {
     if (!this.analyser || !this.waveformData.length) return 0;
 

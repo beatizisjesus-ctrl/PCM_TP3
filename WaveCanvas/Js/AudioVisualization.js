@@ -15,10 +15,7 @@ class AudioVisualization {
     this.testData = new Uint8Array(256);
     this.frameCount = 0;
 
-    // Inicializar dados de teste
-    for (let i = 0; i < this.testData.length; i++) {
-      this.testData[i] = Math.sin(i / 10) * 128 + 128;
-    }
+   
   }
 
   draw() {
@@ -94,8 +91,4 @@ class AudioVisualization {
     );
   }
 
-  normalizeData() {
-    // TODO: normalizar dados de áudio
-    return [];
-  }
 }
