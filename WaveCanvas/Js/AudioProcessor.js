@@ -9,6 +9,7 @@ class AudioProcessor {
     this.frequencyData = new Uint8Array();
     this.waveformData = new Uint8Array();
     this.isPlaying = false;
+    this.onEnded = null;
   }
 
   async startMicrophone() {
@@ -98,7 +99,10 @@ class AudioProcessor {
           //quando acabar o audio, para
           this.mediaSourceBuffer.onended = () => {
             console.log("Ficheiro terminou, parando automaticamente...");
-            this.stop(); // isso vai parar áudio e visualização
+            this.stop(); // isso vai parar áudio e visualização para a frequencia e waveform
+            if (this.onEnded) {
+              this.onEnded(); // avisa a app que é preciso parar a visualizaçao, importante para particulas
+            }
           };
           // Iniciar reprodução
           this.mediaSourceBuffer.start();

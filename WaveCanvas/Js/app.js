@@ -12,6 +12,10 @@ class App {
     this.setVisualization("spectrum"); //para começar
     // Inicialização
     this.init();
+    this.audioProcessor.onEnded = () => {
+      console.log("Callback recebido: áudio terminou.");
+      this.stopAudio(); // Isto já para áudio, animação e UI
+    };
   }
 
   init() {
