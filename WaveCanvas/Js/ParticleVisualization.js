@@ -50,6 +50,7 @@ class ParticleVisualization extends AudioVisualization {
 
   updateParticles() {
     // TODO: atualizar estado das partículas
+  
     const data = this.audioProcessor
       ? this.audioProcessor.getFrequencyData()
       : this.testData;
@@ -61,6 +62,7 @@ class ParticleVisualization extends AudioVisualization {
 
     for (let i = 0; i < this.particles.length; i++) {
       const p = this.particles[i];
+      p.radius = this.getProperties().particleRadius;
 
       // Mover partícula
       p.x += p.vx;

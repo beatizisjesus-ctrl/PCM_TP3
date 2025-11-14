@@ -37,14 +37,6 @@ class UIManager {
       );
       $("#properties-container").append(bar_WidthScale);
     } else {
-      // propriedades das particulas
-      const particle_Count = this.createPropertyControl(
-        "particleCount",
-        4,
-        1,
-        5,
-        1
-      );
       const particle_Radius = this.createPropertyControl(
         "particleRadius",
         2,
@@ -59,12 +51,11 @@ class UIManager {
         150,
         20
       );
-      $("#properties-container").append(particle_Count);
       $("#properties-container").append(particle_Radius);
       $("#properties-container").append(connection_Distance);
-    }
 
-    console.log("Atualizando painel de propriedades...");
+      console.log("Atualizando painel de propriedades...");
+    }
   }
 
   updateAudioInfo(info, isError = false) {

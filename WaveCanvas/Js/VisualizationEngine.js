@@ -1,6 +1,6 @@
 // Motor de Visualização
 class VisualizationEngine {
-  constructor(canvasId, audioProcessor) {
+  constructor(canvasId, audioProcessor, app) {
     this.canvas = document.getElementById(canvasId);
     this.ctx = this.canvas.getContext("2d");
     this.visualizations = new Map();
@@ -8,6 +8,7 @@ class VisualizationEngine {
     this.animationId = null;
     this.isRunning = false;
     this.audioProcessor = audioProcessor;
+    this.app = app;
 
     // Inicializar visualizações
     this.resize();
@@ -55,8 +56,6 @@ class VisualizationEngine {
     // Pede que o proximo frame use Animacao, para tornar o loop continuo.
     this.animationId = requestAnimationFrame(() => this.updateLoop());
 
-    //FALTA ATUALIZAR PROPERTIES PANEL
-
     console.log("Motor de visualização iniciado.");
   }
 
@@ -64,6 +63,7 @@ class VisualizationEngine {
     if (!this.isRunning) return;
     this.animationId = requestAnimationFrame(() => this.updateLoop());
     this.currentVisualization.update();
+    this.updateUI();
   }
 
   stop() {
@@ -75,6 +75,17 @@ class VisualizationEngine {
       this.animationId = null;
     }
     console.log("Motor de visualização parado.");
+    this.updateUI();
+  }
+
+  updateUI() {
+    let info = {
+      level: parseInt(
+        Math.abs(this.audioProcessor.calculateAudioLevel()) * 100
+      ),
+      status: this.isRunning ? "Ativo" : "Parado",
+    };
+    this.app.uiManager.updateAudioInfo(info, false);
   }
 
   resize() {

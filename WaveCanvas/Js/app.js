@@ -4,7 +4,8 @@ class App {
     this.audioProcessor = new AudioProcessor();
     this.visualizationEngine = new VisualizationEngine(
       "audioCanvas",
-      this.audioProcessor
+      this.audioProcessor,
+      this
     );
     this.exportManager = new ExportManager(this.visualizationEngine);
     this.uiManager = new UIManager(this); //para o uimanager saber que app existe e tbm usar os objetos daqui
@@ -71,7 +72,6 @@ class App {
     this.uiManager.updatePropertiesPanel();
     console.log(`Definindo visualização: ${type}`);
   }
-
 
   destroy() {
     // TODO: limpar recursos
