@@ -93,10 +93,12 @@ class VisualizationEngine {
     if (!this.canvas) return;
 
     // Ajusta o canvas ao tamanho do container (ou da janela)
+    //Pegando no tamanho real do container (CSS)
+    //Copia esse tamanho para a resolução interna do canvas
     this.canvas.width = this.canvas.clientWidth;
     this.canvas.height = this.canvas.clientHeight;
 
-    // Se for preiciso redimensionar a visualizaçao atual
+    // Se for preiciso redimensionar a visualizaçao atual, para fazer a atualizaçao
     if (this.currentVisualization?.resize) {
       this.currentVisualization.resize(this.canvas.width, this.canvas.height);
     }
