@@ -1,4 +1,3 @@
-// Gestão de UI
 class UIManager {
   constructor(app) {
     this.app = app;
@@ -23,7 +22,6 @@ class UIManager {
       const line_Width = this.createPropertyControl("lineWidth", 4, 1, 5, 1);
       //const line_Color = this.createPropertyControl("lineColor", 4, 1, 5, 1);
       $("#properties-container").append(line_Width);
-      //document.getElementById("properties-container").appendChild(line_Color);
     } else if (
       this.visualizationEngine.currentVisualization.name ===
       "Espectro de Frequências"
@@ -121,13 +119,14 @@ class UIManager {
       }
     });
 
-    //muda o tipo de visualizaçao consoante a escolha do utilizador:
+    //Muda o tipo de visualizaçao consoante a escolha do utilizador:
     //envia o que foi escolhido pelo o utilizador para a app
     $("#visualizationType").on("change", (e) => {
       this.app.setVisualization(e.target.value);
       this.updatePropertiesPanel();
     });
 
+    //Exportações
     $("#exportPNG").on("click", () => {
       this.app.exportManager.exportAsPNG();
     });

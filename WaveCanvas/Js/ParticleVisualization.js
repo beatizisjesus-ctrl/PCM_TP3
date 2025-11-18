@@ -11,7 +11,7 @@ class ParticleVisualization extends AudioVisualization {
       particleRadius: 2,
       connectionDistance: 100,
     };
-    // Inicializar partículas
+    // Inicializar particles
     this.initParticles();
   }
 
@@ -31,7 +31,7 @@ class ParticleVisualization extends AudioVisualization {
 
   getProperties() {
     // TODO: obter propriedades específicas
-    return super.getProperties(); //na classe mae existe este metodo get.properties que vai buscar as propriedades especificas de cada visualizaçao
+    return super.getProperties(); //na classe mãe existe este metodo get.properties que vai buscar as propriedades específicas de cada visualização
   }
 
   initParticles() {
@@ -77,8 +77,8 @@ class ParticleVisualization extends AudioVisualization {
         const freqIndex = Math.floor((i / this.particles.length) * data.length);
         const intensity = data[freqIndex] / 255;
 
-        //MUDANÇA
-        //para tornar mais dinamico, assim ,mm que os valores sejam baixos, deixam de ser
+      
+        //para tornar mais dinamico, assim ,mesmo que os valores sejam baixos, deixam de ser
         const freqContribution = intensity * 5; // depende do espectro
         const levelContribution = audioLevel * 10; // volume total
         p.vx += (Math.random() - 0.5) * (freqContribution + levelContribution);
@@ -86,7 +86,7 @@ class ParticleVisualization extends AudioVisualization {
 
         // Limitar velocidade
         const speed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
-        //MUDANÇA
+        
         //mudou-se os valores para aumentar a diferença entre som e sem som
         const maxSpeed = 1 + audioLevel * 10;
         if (speed > maxSpeed) {

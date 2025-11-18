@@ -8,7 +8,7 @@ class WaveformVisualization extends AudioVisualization {
   }
 
   draw() {
-    // TODO: desenhar forma de onda
+    // TODO: Desenhar forma de onda
     this.clearCanvas();
     this.drawGrid();
 

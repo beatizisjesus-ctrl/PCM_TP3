@@ -15,7 +15,6 @@ class AudioVisualization {
     this.testData = new Uint8Array(256);
     this.frameCount = 0;
 
-   
   }
 
   draw() {
@@ -57,7 +56,7 @@ class AudioVisualization {
     // TODO: desenhar grelha de fundo
     const width = this.canvas.width;
     const height = this.canvas.height;
-    const gridSize = 50; // tamanho de cada célula da grelha (podes mudar)
+    const gridSize = 50; // tamanho de cada célula da grelha 
 
     // Define cor e espessura das linhas
     this.ctx.strokeStyle = "#ccc";

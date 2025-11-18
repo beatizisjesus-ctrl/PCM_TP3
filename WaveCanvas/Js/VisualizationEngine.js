@@ -53,7 +53,7 @@ class VisualizationEngine {
       return;
     }
 
-    // Pede que o proximo frame use Animacao, para tornar o loop continuo.
+    // Pede que o proximo frame use Animação, para tornar o loop contínuo.
     this.animationId = requestAnimationFrame(() => this.updateLoop());
 
     console.log("Motor de visualização iniciado.");
@@ -98,7 +98,7 @@ class VisualizationEngine {
     this.canvas.width = this.canvas.clientWidth;
     this.canvas.height = this.canvas.clientHeight;
 
-    // Se for preiciso redimensionar a visualizaçao atual, para fazer a atualizaçao
+    // Se for preciso redimensionar a visualizaçao atual, para fazer a atualização
     if (this.currentVisualization?.resize) {
       this.currentVisualization.resize(this.canvas.width, this.canvas.height);
     }
@@ -126,7 +126,6 @@ class VisualizationEngine {
 
     // Atualiza a propriedade na visualização atual
     this.currentVisualization.updateProperty(property, value);
-
     console.log(`Atualizando propriedade: ${property} = ${value}`);
   }
 }

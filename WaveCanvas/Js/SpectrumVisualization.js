@@ -1,4 +1,3 @@
-// Visualizações Concretas
 class SpectrumVisualization extends AudioVisualization {
   constructor(canvas, audioProcessor) {
     super(canvas, audioProcessor);

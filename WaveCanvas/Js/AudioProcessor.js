@@ -30,17 +30,17 @@ class AudioProcessor {
           const mediaSource = this.micContext.createMediaStreamSource(stream);
           this.mediaSourceMicrophone = mediaSource; //microfone
           this.stream = stream;
-          //configurar o analyzer:
+          //configurar o analyser:
           this.analyser = this.micContext.createAnalyser();
           this.analyser.fftSize = 2048; //define-se o tamanho da janela de análise de frequência.
           //O analyser observa o sinal de audio e fornece métodos para preencher arrays com os dados do áudio no momento atual:
           //frequencyData → armazena intensidade de cada faixa de frequência (espectro).
           //waveformData → armazena valores do sinal de áudio ao longo do tempo (forma da onda).
           this.frequencyData = new Uint8Array(this.analyser.frequencyBinCount); //Cria-se um array de 8 bits (0–255) para armazenar os dados de frequência.
-          this.waveformData = new Uint8Array(this.analyser.fftSize); //o mm do de cima, mas para a forma de onda de audio
+          this.waveformData = new Uint8Array(this.analyser.fftSize); //o mesmo do de cima, mas para a forma de onda de audio
           // liga a fonte de áudio ao analyser
           this.mediaSourceMicrophone.connect(this.analyser);
-          //destinatin, sai o audio
+          //destination, sai o audio
           this.analyser.connect(this.micContext.destination);
           this.mediaStreamMicrophone = this.stream; //stream do microfone
           this.isPlaying = true;
@@ -79,7 +79,7 @@ class AudioProcessor {
 
           // Criar uma fonte de áudio a partir do buffer
           const bufferSource = this.fileContext.createBufferSource();
-          bufferSource.buffer = this.audioBuffer; //mantem-se o mm audioBuffer decodificado para se poder reproudzir varios fiecheiros audio, usando o mm buffer
+          bufferSource.buffer = this.audioBuffer; //mantem-se o mesmo audioBuffer decodificado para se poder reproudzir varios ficheiros audio, usando o mesmo buffer
           this.mediaSourceBuffer = bufferSource; //atualiza-se mediaSourceBuffer com uma novo no de sourceBuffer
 
           // Criar (ou recriar) o analyser
@@ -179,7 +179,7 @@ class AudioProcessor {
     return this.waveformData;
   }
 
-  //ParticleVisualization usa isto para chamar fazer a visualização por partículas
+  //ParticleVisualization chama isto para fazer a visualização por partículas
   calculateAudioLevel() {
     if (!this.analyser || !this.waveformData.length) return 0;
 

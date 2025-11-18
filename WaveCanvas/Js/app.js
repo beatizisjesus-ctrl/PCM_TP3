@@ -91,7 +91,7 @@ class App {
       this.visualizationEngine.stop();
     }
 
-    // Remove event listeners do UIManager (assumindo que tens uma função cleanup)
+    // Remove event listeners do UIManager 
     if (this.uiManager.cleanupEventListeners) {
       this.uiManager.cleanupEventListeners();
     }

@@ -5,7 +5,7 @@ class ExportManager {
   }
 
   exportAsPNG() {
-    // TODO: exportar como PNG
+    // TODO: Exportar como PNG
     console.log("Exportando como PNG...");
 
     try {
@@ -20,7 +20,7 @@ class ExportManager {
   }
 
   exportAsJPEG(quality = 0.9) {
-    // TODO: exportar como JPEG
+    // TODO: Exportar como JPEG
     console.log(`Exportando como JPEG com qualidade ${quality}...`);
 
     try {
