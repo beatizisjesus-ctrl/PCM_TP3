@@ -18,10 +18,13 @@ class UIManager {
       return;
     }
     //para todas as visualizações
-    const grelha = this.createPropertyControl("showGrid", 50, 1, 360, 1);
+    const grelha = this.createGridPropertyControl("showgrid", false);
     $("#properties-container-grelha").append(grelha);
     const Cores = this.createColorPropertyControl("Colors");
     $("#properties-container-cor").append(Cores);
+    const coresFundo =
+      this.createBackgroundColorPropertyControl("Background Color");
+    $("#properties-container-fundo").append(coresFundo);
     if (
       this.visualizationEngine.currentVisualization.name === "Forma de Onda"
     ) {
@@ -166,6 +169,7 @@ class UIManager {
     update();
   }
 
+  //no geral:
   createPropertyControl(property, value, min, max, step) {
     // TODO: criar controlo de propriedade
     const container = $("<div>").addClass("property-control");
@@ -194,14 +198,15 @@ class UIManager {
     return container;
   }
 
+  //para cor:
   createColorPropertyControl(property) {
     // TODO: criar controlo de propriedade
-    const container = $("<div>").addClass("property-control");
+    const container = $("<div>").addClass("property-control-cor");
 
     const label = $("<label>").text(property).attr("for", `prop-${property}`);
 
     const input = $("<input>")
-      .attr("type", "color")
+      .attr("type", "color") //mudou-se range para color para obter o color picker
       .attr("id", `prop-${property}`);
 
     input.on("input", (e) => {
@@ -213,6 +218,61 @@ class UIManager {
 
     container.append(label).append(input);
 
+    return container;
+  }
+
+  //para mudar a cor do background
+
+  createBackgroundColorPropertyControl(property) {
+    // TODO: criar controlo de propriedade
+    const container = $("<div>").addClass("property-control-cor");
+
+    const label = $("<label>").text(property).attr("for", `prop-${property}`);
+
+    const input = $("<input>")
+      .attr("type", "color") //mudou-se range para color para obter o color picker
+      .attr("id", `prop-${property}`);
+
+    input.on("input", (e) => {
+      $("#audioCanvas").css("background-color", e.target.value);
+      this.visualizationEngine.updateVisualizationProperty(
+        property,
+        e.target.value
+      );
+    });
+
+    container.append(label).append(input);
+
+    return container;
+  }
+
+  //para grelha
+  createGridPropertyControl(property, initialState) {
+    // TODO: criar controlo de propriedade
+    const container = $("<div>").addClass("property-control-grelha");
+    //poe texto no boato e liga-o a um input
+    const label = $("<label>").text(property).attr("for", `prop-${property}`);
+    const button = $("<button>").text(initialState ? "ON" : "OFF");
+
+    let state = initialState;
+    //Com o clique muda de estado
+    button.on("click", () => {
+      state = !state; // alterna o estado
+      button.text(state ? "ON" : "OFF");
+
+      if (state) {
+        this.drawGrid(); // mostra grelha
+      } else {
+        this.removeGrid(); // esconde grelha
+      }
+      // Atualiza no motor de visualização
+      UIManager.visualizationEngine.updateVisualizationProperty(
+        property,
+        state
+      );
+    });
+
+    container.append(label).append(button);
     return container;
   }
 }

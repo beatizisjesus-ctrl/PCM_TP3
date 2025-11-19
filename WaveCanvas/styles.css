@@ -192,6 +192,23 @@ select {
   display: none;
 }
 
+.property-control-grelha button {
+  padding: 6px 12px;
+  border-radius: 5px;
+  border: 1px solid #333;
+  background-color: #eee;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.property-control-grelha button:hover {
+  background-color: #ddd;
+}
+
+.property-control-grelha button:active {
+  background-color: #ccc;
+}
+
 @media (max-width: 768px) {
   main {
     display: flex;
