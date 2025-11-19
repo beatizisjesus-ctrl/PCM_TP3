@@ -11,6 +11,9 @@ class UIManager {
     // TODO: atualizar painel de propriedades
     $("#properties-container").html("");
     $("#properties-container-cor").html("");
+    $("#properties-container-fundo").html("");
+    $("#properties-container-grelha").html("");
+    $("#properties-container-sensibilidade").html("");
     if (!this.visualizationEngine.currentVisualization) {
       console.warn(
         "Nenhuma visualização ativa — painel de propriedades vazio."
@@ -18,13 +21,21 @@ class UIManager {
       return;
     }
     //para todas as visualizações
-    const grelha = this.createGridPropertyControl("showgrid", false);
+    const grelha = this.createGridPropertyControl("Showgrid", false);
     $("#properties-container-grelha").append(grelha);
     const Cores = this.createColorPropertyControl("Colors");
     $("#properties-container-cor").append(Cores);
     const coresFundo =
-      this.createBackgroundColorPropertyControl("Background Color");
+      this.createBackgroundColorPropertyControl("BackgroundColor");
     $("#properties-container-fundo").append(coresFundo);
+    const sensibilidade = this.createPropertyControl(
+      "Sensitivity",
+      50,
+      1,
+      100,
+      1
+    );
+    $("#properties-container-sensibilidade").append(sensibilidade);
     if (
       this.visualizationEngine.currentVisualization.name === "Forma de Onda"
     ) {
@@ -262,8 +273,6 @@ class UIManager {
 
       if (state) {
         this.drawGrid(); // mostra grelha
-      } else {
-        this.removeGrid(); // esconde grelha
       }
       // Atualiza no motor de visualização
       UIManager.visualizationEngine.updateVisualizationProperty(

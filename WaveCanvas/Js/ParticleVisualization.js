@@ -14,6 +14,7 @@ class ParticleVisualization extends AudioVisualization {
     this.createProperties(50, "Colors");
     this.createProperties(50, "showGrid");
     this.createProperties(50, "Background");
+    this.createProperties(50, "Sensitivity");
     // Inicializar particles
     this.initParticles();
   }
@@ -65,7 +66,7 @@ class ParticleVisualization extends AudioVisualization {
 
     for (let i = 0; i < this.particles.length; i++) {
       const p = this.particles[i];
-      p.radius = this.getProperties().particleRadius; //liga às propriedades
+      p.radius = this.getProperties().particleRadius;//liga às propriedades
       p.color = this.getProperties().Colors;
 
       // Mover partícula

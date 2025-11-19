@@ -6,6 +6,9 @@ class WaveformVisualization extends AudioVisualization {
     this.properties["lineWidth"] = 4;
     this.properties["lineColor"] = "#4cc9f0";
     this.createProperties(50, "Colors");
+    this.createProperties(50, "showGrid");
+    this.createProperties(50, "Background");
+    this.createProperties(50, "Sensitivity");
   }
 
   draw() {
