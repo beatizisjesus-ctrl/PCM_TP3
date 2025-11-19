@@ -13,24 +13,24 @@ class SpectrumVisualization extends AudioVisualization {
   }
 
   draw() {
-    console.log(this.audioProcessor.getFrequencyData());
-    // TODO: desenhar espectro de frequências
     this.clearCanvas();
 
-    // Implementação básica para teste
     const data = this.audioProcessor
       ? this.audioProcessor.getFrequencyData()
       : this.testData;
 
     const scale = this.properties.barWidthScale || 1;
+    const sensitivity = this.properties.Sensitivity || 50; // obtém valor de sensitivity do slider
+
     const barWidth = (this.canvas.width / data.length) * scale;
 
     for (let i = 0; i < data.length; i++) {
-      const barHeight = (data[i] / 255) * this.canvas.height;
+      let barHeight = (data[i] / 255) * this.canvas.height * (sensitivity / 50);
+
       const x = i * barWidth;
       const y = this.canvas.height - barHeight;
 
-      this.ctx.fillStyle = this.getProperties().Colors; //liga-se a propriedade à visualização
+      this.ctx.fillStyle = this.getProperties().Colors;
       this.ctx.fillRect(x, y, barWidth, barHeight);
     }
   }

@@ -66,7 +66,7 @@ class ParticleVisualization extends AudioVisualization {
 
     for (let i = 0; i < this.particles.length; i++) {
       const p = this.particles[i];
-      p.radius = this.getProperties().particleRadius;//liga às propriedades
+      p.radius = this.getProperties().particleRadius; //liga às propriedades
       p.color = this.getProperties().Colors;
 
       // Mover partícula
