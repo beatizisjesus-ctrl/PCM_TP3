@@ -5,6 +5,7 @@ class WaveformVisualization extends AudioVisualization {
     // Inicializar propriedades específicas
     this.properties["lineWidth"] = 4;
     this.properties["lineColor"] = "#4cc9f0";
+    this.createProperties(50, "Colors");
   }
 
   draw() {
@@ -33,7 +34,7 @@ class WaveformVisualization extends AudioVisualization {
       }
     }
 
-    this.ctx.strokeStyle = "#4cc9f0";
+    this.ctx.strokeStyle = this.getProperties().Colors; //liga-se a propriedade à visualização
     this.ctx.lineWidth = this.getProperties().lineWidth;
     this.ctx.stroke();
   }

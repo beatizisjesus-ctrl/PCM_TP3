@@ -14,7 +14,6 @@ class AudioVisualization {
     this.properties = {};
     this.testData = new Uint8Array(256);
     this.frameCount = 0;
-
   }
 
   draw() {
@@ -32,6 +31,11 @@ class AudioVisualization {
     // TODO: redimensionar visualização
     this.canvas.width = width;
     this.canvas.height = height;
+  }
+
+  //para adicionar as propriedas a cada visualização
+  createProperties(value, property) {
+    this.properties[property] = value;
   }
 
   getProperties() {
@@ -56,7 +60,7 @@ class AudioVisualization {
     // TODO: desenhar grelha de fundo
     const width = this.canvas.width;
     const height = this.canvas.height;
-    const gridSize = 50; // tamanho de cada célula da grelha 
+    const gridSize = 50; // tamanho de cada célula da grelha
 
     // Define cor e espessura das linhas
     this.ctx.strokeStyle = "#ccc";
@@ -89,5 +93,4 @@ class AudioVisualization {
       this.canvas.height
     );
   }
-
 }

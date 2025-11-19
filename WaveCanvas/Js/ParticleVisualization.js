@@ -11,6 +11,8 @@ class ParticleVisualization extends AudioVisualization {
       particleRadius: 2,
       connectionDistance: 100,
     };
+    this.createProperties(50, "Colors");
+    this.createProperties(50, "showGrid");
     // Inicializar particles
     this.initParticles();
   }
@@ -42,15 +44,15 @@ class ParticleVisualization extends AudioVisualization {
         y: Math.random() * this.canvas.height,
         vx: (Math.random() - 0.5) * 2,
         vy: (Math.random() - 0.5) * 2,
-        radius: this.properties.particleRadius || 2,
-        color: `hsl(${Math.random() * 360}, 100%, 50%)`,
+        radius: this.getProperties().particleRadius || 2,
+        color: `hsl(${this.getProperties().Colors}, 100%, 50%)`, //liga-se a propriedade à visualização
       });
     }
   }
 
   updateParticles() {
     // TODO: atualizar estado das partículas
-  
+
     const data = this.audioProcessor
       ? this.audioProcessor.getFrequencyData()
       : this.testData;
@@ -63,6 +65,7 @@ class ParticleVisualization extends AudioVisualization {
     for (let i = 0; i < this.particles.length; i++) {
       const p = this.particles[i];
       p.radius = this.getProperties().particleRadius;
+      p.color = this.getProperties().Colors;
 
       // Mover partícula
       p.x += p.vx;
@@ -77,7 +80,6 @@ class ParticleVisualization extends AudioVisualization {
         const freqIndex = Math.floor((i / this.particles.length) * data.length);
         const intensity = data[freqIndex] / 255;
 
-      
         //para tornar mais dinamico, assim ,mesmo que os valores sejam baixos, deixam de ser
         const freqContribution = intensity * 5; // depende do espectro
         const levelContribution = audioLevel * 10; // volume total
@@ -86,7 +88,7 @@ class ParticleVisualization extends AudioVisualization {
 
         // Limitar velocidade
         const speed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
-        
+
         //mudou-se os valores para aumentar a diferença entre som e sem som
         const maxSpeed = 1 + audioLevel * 10;
         if (speed > maxSpeed) {

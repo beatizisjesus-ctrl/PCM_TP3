@@ -6,6 +6,7 @@ class SpectrumVisualization extends AudioVisualization {
     this.properties = {
       barWidthScale: 5,
     };
+    this.createProperties("#ff0000", "Colors");
   }
 
   draw() {
@@ -19,14 +20,14 @@ class SpectrumVisualization extends AudioVisualization {
       : this.testData;
 
     const scale = this.properties.barWidthScale || 1;
-    const barWidth = this.canvas.width / data.length * scale;
+    const barWidth = (this.canvas.width / data.length) * scale;
 
     for (let i = 0; i < data.length; i++) {
       const barHeight = (data[i] / 255) * this.canvas.height;
       const x = i * barWidth;
       const y = this.canvas.height - barHeight;
 
-      this.ctx.fillStyle = `hsl(${(i / data.length) * 360}, 100%, 50%)`;
+      this.ctx.fillStyle = this.getProperties().Colors; //liga-se a propriedade à visualização
       this.ctx.fillRect(x, y, barWidth, barHeight);
     }
   }

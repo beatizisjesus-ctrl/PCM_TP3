@@ -10,12 +10,18 @@ class UIManager {
   updatePropertiesPanel() {
     // TODO: atualizar painel de propriedades
     $("#properties-container").html("");
+    $("#properties-container-cor").html("");
     if (!this.visualizationEngine.currentVisualization) {
       console.warn(
         "Nenhuma visualização ativa — painel de propriedades vazio."
       );
       return;
     }
+    //para todas as visualizações
+    const grelha = this.createPropertyControl("showGrid", 50, 1, 360, 1);
+    $("#properties-container-grelha").append(grelha);
+    const Cores = this.createColorPropertyControl("Colors");
+    $("#properties-container-cor").append(Cores);
     if (
       this.visualizationEngine.currentVisualization.name === "Forma de Onda"
     ) {
@@ -49,13 +55,20 @@ class UIManager {
         150,
         20
       );
+      const particle_Count = this.createPropertyControl(
+        "particleCount",
+        100,
+        80,
+        150,
+        20
+      );
       $("#properties-container").append(particle_Radius);
       $("#properties-container").append(connection_Distance);
-
+      $("#properties-container").append(particle_Count);
       console.log("Atualizando painel de propriedades...");
     }
   }
-
+  //acrescentar as propriedades dos fractais
   updateAudioInfo(info, isError = false) {
     // TODO: atualizar informações de áudio
     const audioStatus = $("#audioStatus");
@@ -173,6 +186,28 @@ class UIManager {
       this.visualizationEngine.updateVisualizationProperty(
         property,
         parseFloat(e.target.value)
+      );
+    });
+
+    container.append(label).append(input);
+
+    return container;
+  }
+
+  createColorPropertyControl(property) {
+    // TODO: criar controlo de propriedade
+    const container = $("<div>").addClass("property-control");
+
+    const label = $("<label>").text(property).attr("for", `prop-${property}`);
+
+    const input = $("<input>")
+      .attr("type", "color")
+      .attr("id", `prop-${property}`);
+
+    input.on("input", (e) => {
+      this.visualizationEngine.updateVisualizationProperty(
+        property,
+        e.target.value
       );
     });
 
