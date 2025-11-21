@@ -7,20 +7,22 @@ class SpectrumVisualization extends AudioVisualization {
       barWidthScale: 5,
     };
     this.createProperties("#ff0000", "Colors");
-    this.createProperties(50, "showGrid");
+    this.createProperties(50, "ShowGrid");
     this.createProperties(50, "Background");
     this.createProperties(50, "Sensitivity");
   }
 
   draw() {
     this.clearCanvas();
+    if (this.properties.Showgrid) {
+      this.drawGrid();
+    }
 
     const data = this.audioProcessor
       ? this.audioProcessor.getFrequencyData()
       : this.testData;
 
     const scale = this.properties.barWidthScale || 1;
-    // this.properties.Sensitivity || 50;
 
     const barWidth = (this.canvas.width / data.length) * scale;
 

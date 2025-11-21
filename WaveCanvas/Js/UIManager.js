@@ -272,7 +272,7 @@ class UIManager {
       button.text(state ? "ON" : "OFF");
 
       if (state) {
-        this.drawGrid(); // mostra grelha
+        this.visualizationEngine.currentVisualization.drawGrid(); // mostra grelha
       }
       // Atualiza no motor de visualização
       this.visualizationEngine.updateVisualizationProperty(property, state);

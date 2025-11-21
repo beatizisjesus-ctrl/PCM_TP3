@@ -6,7 +6,7 @@ class WaveformVisualization extends AudioVisualization {
     this.properties["lineWidth"] = 4;
     this.properties["lineColor"] = "#4cc9f0";
     this.createProperties(50, "Colors");
-    this.createProperties(50, "showGrid");
+    this.createProperties(50, "ShowGrid");
     this.createProperties(50, "Background");
     this.createProperties(50, "Sensitivity");
   }
@@ -14,7 +14,9 @@ class WaveformVisualization extends AudioVisualization {
   draw() {
     // TODO: Desenhar forma de onda
     this.clearCanvas();
-    this.drawGrid();
+    if (this.properties.Showgrid) {
+      this.drawGrid();
+    }
 
     // Implementação básica para teste
     const data = this.audioProcessor

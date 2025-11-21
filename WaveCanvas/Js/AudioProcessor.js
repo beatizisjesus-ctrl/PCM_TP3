@@ -186,12 +186,15 @@ class AudioProcessor {
   }
 
   getWaveformData() {
+    //É necessário normalizar os valores, pois o centro(neutro) é 128, se multiplicarmo sisto pela sensibilidade sobe, por isso
+    //coloca-se de -1 a 1, para se aplicar mais facilemnte a sensibilidade. Depois é necessario restaurar os valores originais, pois
+    //o Uint8Array nao aceita valores negativos, or isso voltamos a por de 0 a 255;
     const sensitivity = Number(this.app.needSensitivity() ?? 50);
     const arrayOriginal = new Uint8Array(this.waveformData.length);
     for (let i = 0; i < this.waveformData.length; i++) {
-      let valores = this.waveformData[i] - 128; //128 é o valor de centro, acima os valores sao positivos, a baixo sao negativos
-      valores = (valores * sensitivity) / 50; //aplica a sensibilidade, valor neutro é 50, se for 100 fica 2
-      valores = valores + 128; //voltar a ajustar o intervalo
+      let valores = (this.waveformData[i] - 128) / 128; // normalizaçao (coloca de -1 a 1), o valor maximo sera 1
+      valores = valores * (sensitivity / 50); //aplica a sensibilidade, valor neutro é 50, se for 100 fica 2
+      valores = valores * 128 + 128; //reverter de -1 a 1 para 0 a 255
       if (valores > 255) valores = 255; //para nao passar do max e min
       if (valores < 0) valores = 0;
       arrayOriginal[i] = Math.round(valores); //arredonda o numero para o inteiro mais proximo, pois o unityArray so aceita inteiros

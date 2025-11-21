@@ -12,7 +12,7 @@ class ParticleVisualization extends AudioVisualization {
       connectionDistance: 100,
     };
     this.createProperties(50, "Colors");
-    this.createProperties(50, "showGrid");
+    this.createProperties(50, "ShowGrid");
     this.createProperties(50, "Background");
     this.createProperties(50, "Sensitivity");
     // Inicializar particles
@@ -22,9 +22,11 @@ class ParticleVisualization extends AudioVisualization {
   draw() {
     // TODO: desenhar partículas
     this.clearCanvas();
-    this.drawGrid();
     this.drawParticles();
     this.drawConnections();
+    if (this.properties.Showgrid) {
+      this.drawGrid();
+    }
   }
 
   update() {
