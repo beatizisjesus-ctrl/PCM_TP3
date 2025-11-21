@@ -263,18 +263,15 @@ class UIManager {
     const container = $("<div>").addClass("property-control-grelha");
     //poe texto no boato e liga-o a um input
     const label = $("<label>").text(property).attr("for", `prop-${property}`);
-    const button = $("<button>").text(initialState ? "ON" : "OFF");
+    const button = $("<button>").text(initialState ? "OFF" : "ON");
 
     let state = initialState;
     //Com o clique muda de estado
     button.on("click", () => {
       state = !state; // alterna o estado
-      button.text(state ? "ON" : "OFF");
-
-      if (state) {
-        this.visualizationEngine.currentVisualization.drawGrid(); // mostra grelha
-      }
-      // Atualiza no motor de visualização
+      button.text(state ? "OFF" : "ON");
+      // Atualiza no motor de visualização e agrelha de acordo com o estado do botao
+      this.visualizationEngine.currentVisualization.properties.Showgrid = state;
       this.visualizationEngine.updateVisualizationProperty(property, state);
     });
 
