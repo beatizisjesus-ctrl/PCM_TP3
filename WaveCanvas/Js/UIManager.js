@@ -14,6 +14,7 @@ class UIManager {
     $("#properties-container-fundo").html("");
     $("#properties-container-grelha").html("");
     $("#properties-container-sensibilidade").html("");
+    $("#properties-container-intensidade").html("");
     if (!this.visualizationEngine.currentVisualization) {
       console.warn(
         "Nenhuma visualização ativa — painel de propriedades vazio."
@@ -36,6 +37,8 @@ class UIManager {
       1
     );
     $("#properties-container-sensibilidade").append(sensibilidade);
+    const intensidade = this.createIntensityPropertyControl("Intensity", false);
+    $("#properties-container-intensidade").append(intensidade);
     if (
       this.visualizationEngine.currentVisualization.name === "Forma de Onda"
     ) {
@@ -71,10 +74,10 @@ class UIManager {
       );
       const particle_Count = this.createPropertyControl(
         "particleCount",
+        50,
+        2,
         100,
-        80,
-        150,
-        20
+        5
       );
       $("#properties-container").append(particle_Radius);
       $("#properties-container").append(connection_Distance);
@@ -296,5 +299,24 @@ class UIManager {
     //passa o valor do slider para float pq...?
 
     return 50;
+  }
+
+  createIntensityPropertyControl(property, initialState) {
+    const container = $("<div>").addClass("property-control-itensidade");
+    const label = $("<label>").text(property).attr("for", `prop-${property}`);
+    const button = $("<button>").text(initialState ? "OFF" : "ON");
+
+    let state = initialState;
+    //Com o clique muda de estado
+    button.on("click", () => {
+      state = !state; // alterna o estado
+      button.text(state ? "OFF" : "ON");
+      // Atualiza no motor de visualização e agrelha de acordo com o estado do botao
+
+      this.visualizationEngine.updateVisualizationProperty(property, state);
+    });
+
+    container.append(label).append(button);
+    return container;
   }
 }

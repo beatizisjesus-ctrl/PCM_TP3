@@ -9,6 +9,7 @@ class WaveformVisualization extends AudioVisualization {
     this.createProperties(50, "ShowGrid");
     this.createProperties(50, "Background");
     this.createProperties(50, "Sensitivity");
+    this.createProperties(50, "Intensity");
   }
 
   draw() {
@@ -37,6 +38,16 @@ class WaveformVisualization extends AudioVisualization {
       } else {
         this.ctx.lineTo(x, y);
       }
+    }
+
+    if (this.properties.Intensity === true) {
+      const v = data[data.length - 1]; // pega último valor do waveform para a cor
+      const r = v;
+      const g = 50;
+      const b = 255 - v;
+      this.ctx.strokeStyle = `rgb(${r},${g},${b})`;
+    } else {
+      this.ctx.strokeStyle = this.getProperties().Colors;
     }
 
     this.ctx.strokeStyle = this.getProperties().Colors; //liga-se a propriedade à visualização

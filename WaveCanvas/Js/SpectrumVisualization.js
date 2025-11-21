@@ -10,6 +10,7 @@ class SpectrumVisualization extends AudioVisualization {
     this.createProperties(50, "ShowGrid");
     this.createProperties(50, "Background");
     this.createProperties(50, "Sensitivity");
+    this.createProperties(50, "Intensity");
   }
 
   draw() {
@@ -32,7 +33,17 @@ class SpectrumVisualization extends AudioVisualization {
       const x = i * barWidth;
       const y = this.canvas.height - barHeight;
 
-      this.ctx.fillStyle = this.getProperties().Colors;
+      if (this.properties.Intensity === true) {
+        //Cor baseada na intensidade do som
+        const valorEspetro = data[i]; //vai de 0 a 255, a mm gama do modelo rgb
+        const red = valorEspetro;
+        const green = 50;//fica fixo
+        const blue = 255 - valorEspetro;
+        this.ctx.fillStyle = `rgb(${red}, ${green}, ${blue})`;
+      } else {
+        //Usa o color picker normal
+        this.ctx.fillStyle = this.getProperties().Colors;
+      }
       this.ctx.fillRect(x, y, barWidth, barHeight);
     }
   }

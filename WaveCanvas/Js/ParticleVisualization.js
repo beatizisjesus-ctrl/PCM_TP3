@@ -15,6 +15,8 @@ class ParticleVisualization extends AudioVisualization {
     this.createProperties(50, "ShowGrid");
     this.createProperties(50, "Background");
     this.createProperties(50, "Sensitivity");
+    this.createProperties(50, "Intensity");
+    
     // Inicializar particles
     this.initParticles();
   }
@@ -29,9 +31,11 @@ class ParticleVisualization extends AudioVisualization {
     }
   }
 
+  //este uptade é chamado no VisualizationEngine
   update() {
     // TODO: atualizar partículas
     super.update();
+    this.updateParticleCount();
     this.updateParticles();
   }
 
@@ -116,7 +120,7 @@ class ParticleVisualization extends AudioVisualization {
 
   drawConnections() {
     // TODO: desenhar conexões entre partículas
-    const maxDistance = this.properties.connectionDistance || 100;
+    const maxDistance = this.properties.connectionDistance || 100; //esta ligado ao slider das properties
 
     for (let i = 0; i < this.particles.length; i++) {
       for (let j = i + 1; j < this.particles.length; j++) {
@@ -137,6 +141,28 @@ class ParticleVisualization extends AudioVisualization {
           this.ctx.stroke();
         }
       }
+    }
+  }
+
+  updateParticleCount() {
+    const desiredCount = this.properties.particleCount; //liga às propriedades
+    const currentCount = this.particles.length;
+
+    // Obtemos a diferença dos valores, e essa diferença vai ser o numero de particulas qu evao ser desenhadas
+    if (desiredCount > currentCount) {
+      const toAdd = desiredCount - currentCount;
+      for (let i = 0; i < toAdd; i++) {
+        this.particles.push({
+          x: Math.random() * this.canvas.width,
+          y: Math.random() * this.canvas.height,
+          vx: (Math.random() - 0.5) * 2,
+          vy: (Math.random() - 0.5) * 2,
+          radius: this.properties.particleRadius,
+          color: this.properties.Colors,
+        });
+      }
+    } else if (desiredCount < currentCount) {
+      this.particles.splice(desiredCount); // remove tudo a partir de desired count
     }
   }
 }
