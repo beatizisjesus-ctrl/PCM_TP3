@@ -20,12 +20,12 @@ class SpectrumVisualization extends AudioVisualization {
       : this.testData;
 
     const scale = this.properties.barWidthScale || 1;
-    const sensitivity = this.properties.Sensitivity || 50; // obtém valor de sensitivity do slider
+    // this.properties.Sensitivity || 50;
 
     const barWidth = (this.canvas.width / data.length) * scale;
 
     for (let i = 0; i < data.length; i++) {
-      let barHeight = (data[i] / 255) * this.canvas.height * (sensitivity / 50);
+      let barHeight = (data[i] / 255) * this.canvas.height;
 
       const x = i * barWidth;
       const y = this.canvas.height - barHeight;

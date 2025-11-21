@@ -275,13 +275,29 @@ class UIManager {
         this.drawGrid(); // mostra grelha
       }
       // Atualiza no motor de visualização
-      UIManager.visualizationEngine.updateVisualizationProperty(
-        property,
-        state
-      );
+      this.visualizationEngine.updateVisualizationProperty(property, state);
     });
 
     container.append(label).append(button);
     return container;
+  }
+
+  giveSensitivity() {
+    const props = this.visualizationEngine.currentVisualization?.properties;
+    if (props && typeof props.Sensitivity !== "undefined") {
+      //para verificar se o tipo de valor de sensitivity nao é indefinido
+      return Number(props.Sensitivity);
+      //Coloca-se Number pq HTML muitas vezes devolve Strings
+    }
+
+    //fallback: ler o slider no HTML (se existir)
+    const $slider = $("#prop-Sensitivity");
+    if ($slider.length) {
+      const v = parseFloat($slider.val());
+      if (!Number.isNaN(v)) return v;
+    }
+    //passa o valor do slider para float pq...?
+
+    return 50;
   }
 }

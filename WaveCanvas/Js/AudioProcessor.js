@@ -1,5 +1,5 @@
 class AudioProcessor {
-  constructor() {
+  constructor(app) {
     // Contextos separados
     this.micContext = new AudioContext();
     this.fileContext = new AudioContext();
@@ -10,6 +10,7 @@ class AudioProcessor {
     this.waveformData = new Uint8Array();
     this.isPlaying = false;
     this.onEnded = null;
+    this.app = app;
   }
 
   async startMicrophone() {
@@ -172,11 +173,31 @@ class AudioProcessor {
 
   //gets:
   getFrequencyData() {
-    return this.frequencyData;
+    const sensitivity = Number(this.app.needSensitivity() ?? 50);
+    const arrayOriginal = new Uint8Array(this.frequencyData.length);
+    for (let i = 0; i < this.frequencyData.length; i++) {
+      let valores = this.frequencyData[i] * (sensitivity / 50); //se o valor for 50, vai ser 1
+      if (valores > 255) valores = 255; //para nao passar do max e min
+      if (valores < 0) valores = 0;
+      arrayOriginal[i] = Math.round(valores); //arredonda o numero para o inteiro mais proximo, pois o unityArray so aceita inteiros
+    }
+
+    return arrayOriginal;
   }
 
   getWaveformData() {
-    return this.waveformData;
+    const sensitivity = Number(this.app.needSensitivity() ?? 50);
+    const arrayOriginal = new Uint8Array(this.waveformData.length);
+    for (let i = 0; i < this.waveformData.length; i++) {
+      let valores = this.waveformData[i] - 128; //128 é o valor de centro, acima os valores sao positivos, a baixo sao negativos
+      valores = (valores * sensitivity) / 50; //aplica a sensibilidade, valor neutro é 50, se for 100 fica 2
+      valores = valores + 128; //voltar a ajustar o intervalo
+      if (valores > 255) valores = 255; //para nao passar do max e min
+      if (valores < 0) valores = 0;
+      arrayOriginal[i] = Math.round(valores); //arredonda o numero para o inteiro mais proximo, pois o unityArray so aceita inteiros
+    }
+
+    return arrayOriginal;
   }
 
   //ParticleVisualization chama isto para fazer a visualização por partículas

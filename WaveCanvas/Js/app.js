@@ -1,7 +1,7 @@
 // Classe principal da aplicação
 class App {
   constructor() {
-    this.audioProcessor = new AudioProcessor();
+    this.audioProcessor = new AudioProcessor(this);
     this.visualizationEngine = new VisualizationEngine(
       "audioCanvas",
       this.audioProcessor,
@@ -77,6 +77,10 @@ class App {
     console.log(`Definindo visualização: ${type}`);
   }
 
+  needSensitivity() {
+    return this.uiManager.giveSensitivity();
+  }
+
   destroy() {
     // TODO: limpar recursos
     console.log("Destruindo aplicação...");
@@ -91,7 +95,7 @@ class App {
       this.visualizationEngine.stop();
     }
 
-    // Remove event listeners do UIManager 
+    // Remove event listeners do UIManager
     if (this.uiManager.cleanupEventListeners) {
       this.uiManager.cleanupEventListeners();
     }
