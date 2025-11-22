@@ -60,9 +60,9 @@ class UIManager {
     } else {
       const particle_Radius = this.createPropertyControl(
         "particleRadius",
+        5,
         2,
-        2,
-        6,
+        10,
         1
       );
       const connection_Distance = this.createPropertyControl(

@@ -8,7 +8,7 @@ class ParticleVisualization extends AudioVisualization {
     //Inicializar properties
     this.properties = {
       particleCount: 50,
-      particleRadius: 2,
+      particleRadius: 5,
       connectionDistance: 100,
     };
     this.createProperties("#eee24e", "Colors");
@@ -19,6 +19,20 @@ class ParticleVisualization extends AudioVisualization {
 
     // Inicializar particles
     this.initParticles();
+  }
+
+  initParticles() {
+    // TODO: inicializar partículas
+    for (let i = 0; i < 50; i++) {
+      this.particles.push({
+        x: Math.random() * this.canvas.width, //gera posiçao aleatória dentro das dimensoes do canva
+        y: Math.random() * this.canvas.height,
+        vx: (Math.random() - 0.5) * 2, //math.random devolve valores entre 0 e 1, -0.5 fica de -0.5 a 0.5 e depois ficamos com velocidades de -1 a 1
+        vy: (Math.random() - 0.5) * 2,
+        radius: this.getProperties().particleRadius || 2,
+        color: `hsl(${this.getProperties().Colors}, 100%, 50%)`, //liga-se a propriedade à visualização (matiz), saturaçao e luminosidade
+      });
+    }
   }
 
   draw() {
@@ -44,20 +58,6 @@ class ParticleVisualization extends AudioVisualization {
     return super.getProperties(); //na classe mãe existe este metodo get.properties que vai buscar as propriedades específicas de cada visualização
   }
 
-  initParticles() {
-    // TODO: inicializar partículas
-    for (let i = 0; i < 50; i++) {
-      this.particles.push({
-        x: Math.random() * this.canvas.width, //gera posiçao aleatória dentro das dimensoes do canva
-        y: Math.random() * this.canvas.height,
-        vx: (Math.random() - 0.5) * 2, //math.random devolve valores entre 0 e 1, -0.5 fica de -0.5 a 0.5 e depois ficamos com velocidades de -1 a 1
-        vy: (Math.random() - 0.5) * 2,
-        radius: this.getProperties().particleRadius || 2,
-        color: `hsl(${this.getProperties().Colors}, 100%, 100%)`, //liga-se a propriedade à visualização (matiz), saturaçao e luminosidade
-      });
-    }
-  }
-
   updateParticles() {
     // TODO: atualizar estado das partículas
 
@@ -73,7 +73,6 @@ class ParticleVisualization extends AudioVisualization {
     for (let i = 0; i < this.particles.length; i++) {
       const p = this.particles[i];
       p.radius = this.getProperties().particleRadius; //liga às propriedades
-      p.color = this.getProperties().Colors;
 
       // Mover partícula, somando a sua velociade à posição
       p.x += p.vx;
@@ -86,10 +85,20 @@ class ParticleVisualization extends AudioVisualization {
       // Aplicar influência do áudio
       if (data.length > 0) {
         const freqIndex = Math.floor((i / this.particles.length) * data.length); //coloca cada partícula a uma frequência específica do espectro.
-        const intensity = data[freqIndex] / 255; //normaliza entre 0 e 1
+        const frequency = data[freqIndex] / 255; //normaliza entre 0 e 1
+
+        if (this.properties.Intensity === true) {
+          // Mapeia azul (baixa) e vermelho (alta)
+          const intensity = Math.min(audioLevel, 1);
+          const hue = 240 - intensity * 240; //hue=240 fica azul e o 0 é vermelho
+          p.color = `hsl(${hue}, 100%, 50%)`; //matiz(hue)(angulo que representa a cor), saturaçao, luminosidade
+        } else {
+          // Usa o color picker
+          p.color = this.getProperties().Colors;
+        }
 
         //para tornar mais dinamico, assim ,mesmo que os valores sejam baixos, deixam de ser
-        const freqContribution = intensity * 5; // depende do espectro
+        const freqContribution = frequency * 5; // depende do espectro
         const levelContribution = audioLevel * 10; // volume total
         //intensidade da frequência específica influencia a velocidade.
         //volume total influencia a velocidade.

@@ -37,7 +37,7 @@ class SpectrumVisualization extends AudioVisualization {
         //Cor baseada na intensidade do som
         const valorEspetro = data[i]; //vai de 0 a 255, a mm gama do modelo rgb
         const red = valorEspetro;
-        const green = 50;//fica fixo
+        const green = 50; //fica fixo
         const blue = 255 - valorEspetro;
         this.ctx.fillStyle = `rgb(${red}, ${green}, ${blue})`;
       } else {
