@@ -32,6 +32,10 @@ class VisualizationEngine {
       "particles",
       new ParticleVisualization(this.canvas, this.audioProcessor)
     );
+    this.visualizations.set(
+      "Visualização Circular",
+      new CircularVisualization(this.canvas, this.audioProcessor)
+    );
   }
 
   setVisualization(type) {

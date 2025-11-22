@@ -57,6 +57,18 @@ class UIManager {
         0.01
       );
       $("#properties-container").append(bar_WidthScale);
+    } else if (
+      this.visualizationEngine.currentVisualization.name ===
+      "Visualização Circular"
+    ) {
+      const bar_LengthScale = this.createPropertyControl(
+        "barLengthScale",
+        3,
+        1,
+        6,
+        0.01
+      );
+      $("#properties-container").append(bar_LengthScale);
     } else {
       const particle_Radius = this.createPropertyControl(
         "particleRadius",
