@@ -11,12 +11,12 @@ class ParticleVisualization extends AudioVisualization {
       particleRadius: 2,
       connectionDistance: 100,
     };
-    this.createProperties(50, "Colors");
+    this.createProperties("#eee24e", "Colors");
     this.createProperties(50, "ShowGrid");
     this.createProperties(50, "Background");
     this.createProperties(50, "Sensitivity");
     this.createProperties(50, "Intensity");
-    
+
     // Inicializar particles
     this.initParticles();
   }
@@ -48,12 +48,12 @@ class ParticleVisualization extends AudioVisualization {
     // TODO: inicializar partículas
     for (let i = 0; i < 50; i++) {
       this.particles.push({
-        x: Math.random() * this.canvas.width,
+        x: Math.random() * this.canvas.width, //gera posiçao aleatória dentro das dimensoes do canva
         y: Math.random() * this.canvas.height,
-        vx: (Math.random() - 0.5) * 2,
+        vx: (Math.random() - 0.5) * 2, //math.random devolve valores entre 0 e 1, -0.5 fica de -0.5 a 0.5 e depois ficamos com velocidades de -1 a 1
         vy: (Math.random() - 0.5) * 2,
         radius: this.getProperties().particleRadius || 2,
-        color: `hsl(${this.getProperties().Colors}, 100%, 50%)`, //liga-se a propriedade à visualização
+        color: `hsl(${this.getProperties().Colors}, 100%, 100%)`, //liga-se a propriedade à visualização (matiz), saturaçao e luminosidade
       });
     }
   }
@@ -75,26 +75,28 @@ class ParticleVisualization extends AudioVisualization {
       p.radius = this.getProperties().particleRadius; //liga às propriedades
       p.color = this.getProperties().Colors;
 
-      // Mover partícula
+      // Mover partícula, somando a sua velociade à posição
       p.x += p.vx;
       p.y += p.vy;
 
-      // Rebater nas bordas
+      // Se sai do canvas inverte a direção
       if (p.x < 0 || p.x > this.canvas.width) p.vx *= -1;
       if (p.y < 0 || p.y > this.canvas.height) p.vy *= -1;
 
       // Aplicar influência do áudio
       if (data.length > 0) {
-        const freqIndex = Math.floor((i / this.particles.length) * data.length);
-        const intensity = data[freqIndex] / 255;
+        const freqIndex = Math.floor((i / this.particles.length) * data.length); //coloca cada partícula a uma frequência específica do espectro.
+        const intensity = data[freqIndex] / 255; //normaliza entre 0 e 1
 
         //para tornar mais dinamico, assim ,mesmo que os valores sejam baixos, deixam de ser
         const freqContribution = intensity * 5; // depende do espectro
         const levelContribution = audioLevel * 10; // volume total
+        //intensidade da frequência específica influencia a velocidade.
+        //volume total influencia a velocidade.
         p.vx += (Math.random() - 0.5) * (freqContribution + levelContribution);
         p.vy += (Math.random() - 0.5) * (freqContribution + levelContribution);
 
-        // Limitar velocidade
+        // Caluclar velocidade atraves de teorema de pitagoras, este é o limite
         const speed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
 
         //mudou-se os valores para aumentar a diferença entre som e sem som
@@ -102,7 +104,7 @@ class ParticleVisualization extends AudioVisualization {
         if (speed > maxSpeed) {
           p.vx = (p.vx / speed) * maxSpeed;
           p.vy = (p.vy / speed) * maxSpeed;
-        }
+        } //se a particula estiver muito rapida normaliza-se para nao ultrapassar o imite
       }
     }
   }
@@ -111,10 +113,10 @@ class ParticleVisualization extends AudioVisualization {
     // TODO: desenhar partículas
 
     for (const p of this.particles) {
-      this.ctx.beginPath();
-      this.ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-      this.ctx.fillStyle = p.color;
-      this.ctx.fill();
+      this.ctx.beginPath(); //inicia um novo caminho no canvas para que cada particula seja desenhada separadamente
+      this.ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2); //cria o ciruclo, o angulo começa em 0 e acaba em 2pi
+      this.ctx.fillStyle = p.color; //define a cor do circulo
+      this.ctx.fill(); //preenche o circulo
     }
   }
 
@@ -129,16 +131,16 @@ class ParticleVisualization extends AudioVisualization {
 
         const dx = p1.x - p2.x;
         const dy = p1.y - p2.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
+        const distance = Math.sqrt(dx * dx + dy * dy); //modulo da distancia
 
         if (distance < maxDistance) {
-          const opacity = 1 - distance / maxDistance;
+          const opacity = 1 - distance / maxDistance; //quanto mais proximas estiverem as +articulas, mais opaas vao ser as linhas
           this.ctx.beginPath();
-          this.ctx.moveTo(p1.x, p1.y);
-          this.ctx.lineTo(p2.x, p2.y);
-          this.ctx.strokeStyle = `rgba(76, 201, 240, ${opacity * 0.5})`;
+          this.ctx.moveTo(p1.x, p1.y); //ponto inicial da linha
+          this.ctx.lineTo(p2.x, p2.y); //ponto final da linha
+          this.ctx.strokeStyle = `rgba(76, 201, 240, ${opacity * 0.5})`; //cor da linha com opacidade ainda mais transparente ( por causa de *0.5)
           this.ctx.lineWidth = 1;
-          this.ctx.stroke();
+          this.ctx.stroke(); //desenha a linha
         }
       }
     }
