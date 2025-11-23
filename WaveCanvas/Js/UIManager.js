@@ -65,7 +65,7 @@ class UIManager {
       "Visualização Circular"
     ) {
       const bar_LengthScale = this.createPropertyControl(
-        "barLengthScale",
+        "BarLengthScale",
         3,
         1,
         6,

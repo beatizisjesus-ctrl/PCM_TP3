@@ -13,6 +13,7 @@ class CircularVisualization extends AudioVisualization {
     this.createProperties(50, "Background");
     this.createProperties(50, "Sensitivity");
     this.createProperties(50, "Intensity");
+    this.createProperties(3, "BarLengthScale");
 
     this.phase = 0; // fase da animação
   }
@@ -46,16 +47,21 @@ class CircularVisualization extends AudioVisualization {
         3 /
         255;
 
-      // sensibilidade mapeada para 0.5 → 3
-      const sensitivityFactor = 0.5 + (this.properties.Sensitivity / 100) * 2.5;
+      // sensibilidade mapeada para 0.5 a 3
+      const sensitivityFactor =
+        0.5 + (this.properties.BarLengthScale - 1) * 0.5; //para manter os valores visiveis, vai de 0.5 a 3
 
-      // calcula o raio do ponto com base no áudio e sensibilidade
-      const radius =
-        this.properties.baseRadius +
+      const barScale = 0.5 + (this.properties.BarLengthScale / 100) * 2; //vai de 0.5 a 2
+
+      // calcula o raio do ponto com base no áudio, sensibilidade e barScale
+      let amplitude =
         valorAudio *
-          this.properties.amplitudeScale *
-          this.properties.baseRadius *
-          sensitivityFactor;
+        this.properties.amplitudeScale *
+        this.properties.baseRadius *
+        sensitivityFactor;
+      amplitude *= barScale;
+
+      const radius = this.properties.baseRadius + amplitude;
 
       // ondulação dinâmica proporcional ao raio base
       const waveOffset =
@@ -76,10 +82,15 @@ class CircularVisualization extends AudioVisualization {
 
     // cor dinâmica ou fixa
     if (this.properties.Intensity === true) {
-      const level = this.audioProcessor
+      let level = this.audioProcessor
         ? this.audioProcessor.calculateAudioLevel()
         : 0.5;
-      const hue = Math.floor(level * 360);
+
+      const boost = 8; // para se ver o vermelho mais facilmente
+
+      level = Math.min(level * boost, 1); // evita passar de 1
+      //conversao de nivel para valor de cor
+      const hue = 240 - Math.floor(level * 240);
       ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`;
     } else {
       ctx.strokeStyle = this.getProperties().Colors;
