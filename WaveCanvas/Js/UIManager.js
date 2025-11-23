@@ -109,9 +109,7 @@ class UIManager {
     if (isError) {
       audioStatus.text(`Erro: ${info}`).css("color", "#f72585");
     } else {
-      audioStatus
-        .text(`Áudio: ${info.status || "Ativo"}`)
-        .css("color", "#e6e6e6");
+      audioStatus.text(`Áudio: ${info.status || "Ativo"}`);
       audioLevel.text(`Nível: ${info.level || 0}%`);
     }
   }

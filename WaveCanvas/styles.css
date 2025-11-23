@@ -6,8 +6,8 @@
 
 body {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #1a1a2e;
-  color: #e6e6e6;
+  background-color: #ffffff;
+  color: #1f2937;
   line-height: 1.6;
 }
 
@@ -23,7 +23,7 @@ header {
 }
 
 h1 {
-  color: #4cc9f0;
+  color: #007bff;
   font-size: 2.5rem;
 }
 
@@ -37,7 +37,7 @@ main {
 #controls {
   grid-column: 1;
   grid-row: 1 / span 2;
-  background-color: #16213e;
+  background-color: #f0f0f0;
   padding: 20px;
   border-radius: 8px;
 }
@@ -48,8 +48,8 @@ main {
 
 .control-group h3 {
   margin-bottom: 15px;
-  color: #4cc9f0;
-  border-bottom: 1px solid #4cc9f0;
+  color: #007bff;
+  border-bottom: 1px solid #007bff;
   padding-bottom: 5px;
 }
 
@@ -66,51 +66,54 @@ main {
 }
 
 .btn-primary {
-  background-color: #4361ee;
+  background-color: #007bff;
   color: white;
 }
 
 .btn-primary:hover {
-  background-color: #3a56d4;
+  background-color: #1f456e;
 }
 
 .btn-secondary {
-  background-color: #4361ee;
-  color: rgb(17, 5, 5);
+  background-color: #007bff;
+  color: white;
 }
 
 .btn-secondary:hover {
-  background-color: #3a56d4;
+  background-color: #1f456e;
 }
 
 .btn-primary:disabled,
 .btn-secondary:disabled {
-  background-color: #495057;
+  background-color: #cccccc;
   cursor: not-allowed;
+  color: #888888;
 }
 
 input[type="file"] {
   width: 100%;
   padding: 8px;
-  background-color: #0f3460;
-  border: 1px solid #f04cac;
+  background-color: #ffffff;
+  border: 1px solid #cccccc;
   border-radius: 4px;
-  color: #e6e6e6;
+  color: #1f2937;
 }
 
 select {
+  /* Dropdown*/
   width: 100%;
   padding: 8px;
-  background-color: #0f3460;
-  border: 1px solid #4cc9f0;
+  background-color: #ffffff;
+  border: 1px solid #007bff;
   border-radius: 4px;
-  color: #e6e6e6;
+  color: #1f2937;
 }
 
 #visualization-area {
   grid-column: 2;
   grid-row: 1;
-  background-color: #5b80e4;
+  /* Fundo da área de visualização: */
+  background-color: #e0f0ff;
   padding: 20px;
   border-radius: 8px;
   display: flex;
@@ -121,7 +124,7 @@ select {
 #audioCanvas {
   width: 100%;
   height: 300px;
-  background-color: #0f603d;
+  background-color: #222222;
   border-radius: 4px;
 }
 
@@ -131,13 +134,14 @@ select {
   width: 100%;
   display: flex;
   justify-content: space-between;
+  color: #1f2937;
 }
 
 #properties-panel {
-  background-color: #f5f0f4;
+  background-color: #ffffff;
   padding: 20px;
   border-radius: 8px;
-  color: #000;
+  color: #1f2937;
 }
 #properties-panel h3 {
   margin-top: -20px; /* valor negativo sobe o texto */
@@ -158,7 +162,7 @@ select {
 .property-control label {
   display: block;
   margin-bottom: 5px;
-  color: #000000;
+  color: #1f2937;
   font-size: 14px;
   font-family: Arial, sans-serif;
 }
@@ -169,16 +173,16 @@ select {
   gap: 5px; /* espaço entre label e picker */
 }
 .property-control-cor input {
-  width: 100px; /* largura do quadrado */
-  height: 30px; /* altura do quadrado */
+  width: 100px;
+  height: 30px;
   padding: 0; /* remove padding interno */
-  border: 2px solid #4cc9f0; /* borda bonita */
-  border-radius: 6px; /* cantos levemente arredondados */
+  border: 2px solid #007bff;
+  border-radius: 6px; /* cantos arredondados */
   cursor: pointer; /* mostra mãozinha ao passar por cima */
   appearance: none; /* remove estilo padrão do browser */
 }
 .property-control-cor label {
-  color: #000000;
+  color: #1f2937;
   font-size: 14px;
   font-family: Arial, sans-serif;
 }
@@ -186,7 +190,7 @@ select {
 input[type="range"] {
   width: 90%;
   height: 6px;
-  background: #bfc8cb; /* cor da barra */
+  background: #cccccc;
   border-radius: 5px;
 }
 
@@ -201,16 +205,17 @@ input[type="range"] {
 .property-control-grelha button {
   padding: 4px 8px;
   border-radius: 5px;
-  border: 1px solid #5a35f0;
-  background-color: #b7aaeb;
+  border: 1px solid #007bff;
+  background-color: #a0c4ff;
   cursor: pointer;
   margin-left: 10px;
-  color: #000000;
+  color: #1f2937;
   font-family: Arial, sans-serif;
 }
 
 .property-control-grelha button:hover {
-  background-color: #150775;
+  background-color: #1f456e;
+  color: white;
 }
 
 .property-control-grelha button:active {
@@ -218,13 +223,13 @@ input[type="range"] {
 }
 
 .property-control-grelha label {
-  color: #000000;
+  color: #1f2937;
   font-size: 14px;
   font-family: Arial, sans-serif;
 }
 
 .property-control-intensidade label {
-  color: #000000;
+  color: #1f2937;
   font-size: 14px;
   margin-right: 10px;
   font-family: Arial, sans-serif;
@@ -249,12 +254,16 @@ input[type="range"] {
 .property-control-intensidade button {
   padding: 4px 8px;
   border-radius: 5px;
-  border: 1px solid #5a35f0;
-  background-color: #b7aaeb;
+  border: 1px solid #007bff;
+  background-color: #a0c4ff;
   cursor: pointer;
   margin-left: 10px;
-  color: #000000;
+  color: #1f2937;
   font-family: Arial, sans-serif;
+}
+.property-control-intensidade button:hover {
+  background-color: #1f456e;
+  color: white;
 }
 
 .modal {
@@ -263,7 +272,7 @@ input[type="range"] {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: #000000;
+  background-color: rgba(0, 0, 0, 0.7);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -271,12 +280,13 @@ input[type="range"] {
 }
 
 .modal-content {
-  background-color: #16213e;
+  background-color: #f0f0f0;
   padding: 20px;
   border-radius: 8px;
   width: 400px;
   max-width: 90%;
   position: relative;
+  color: #1f2937;
 }
 
 .close {
@@ -285,6 +295,7 @@ input[type="range"] {
   right: 15px;
   font-size: 24px;
   cursor: pointer;
+  color: #007bff;
 }
 
 .hidden {

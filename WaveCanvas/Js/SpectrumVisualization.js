@@ -6,7 +6,7 @@ class SpectrumVisualization extends AudioVisualization {
     this.properties = {
       BarWidthScale: 5,
     };
-    this.createProperties("#ff0000", "Colors");
+    this.createProperties("#5164cfff", "Colors");
     this.createProperties(50, "ShowGrid");
     this.createProperties(50, "Background");
     this.createProperties(50, "Sensitivity");
