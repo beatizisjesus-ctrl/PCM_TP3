@@ -62,14 +62,52 @@
 
         <section id="properties-panel">
           <h3>Propriedades da Visualização</h3>
-          <div id="properties-container">
-            <!--Propriedades dinâmicas serão inseridas aqui, através do UIManager-->
+          <!-- o sm é para continuar responsivo -->
+          <div
+            class="columns-wrapper grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4"
+          >
+            <!-- EColuna da esquerda -->
+            <div class="col-esquerda flex flex-col gap-4">
+              <h4
+                class="text-lg font-semibold text-gray-600 mb-2 border-b border-gray-400 pb-1"
+              ></h4>
+
+              <div id="properties-container" class="property-control"></div>
+
+              <div
+                id="properties-container-sensibilidade"
+                class="property-control"
+              ></div>
+
+              <div
+                id="properties-container-intensidade"
+                class="property-control"
+              >
+                <label>Intensity</label>
+                <button id="intensityBtn">Change</button>
+              </div>
+            </div>
+
+            <!-- Coluna da Direita -->
+
+            <div class="col-direita flex flex-col gap-5">
+              <h4
+                class="text-lg font-semibold text-gray-600 mb-2 border-b border-gray-400 pb-1"
+              ></h4>
+
+              <div id="properties-container-cor" class="property-control-cor"></div>
+
+              <div
+                id="properties-container-fundo"
+                class="property-control-cor"
+              ></div>
+
+              <div id="properties-container-grelha" class="property-control">
+                <label>Show Grid</label>
+                <button id="showGridBtn">Toggle</button>
+              </div>
+            </div>
           </div>
-          <div id="properties-container-cor"></div>
-          <div id="properties-container-grelha"></div>
-          <div id="properties-container-fundo"></div>
-          <div id="properties-container-sensibilidade"></div>
-          <div id="properties-container-intensidade"></div>
         </section>
       </main>
 

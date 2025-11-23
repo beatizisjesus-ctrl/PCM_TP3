@@ -76,7 +76,7 @@ main {
 
 .btn-secondary {
   background-color: #4361ee;
-  color: white;
+  color: rgb(17, 5, 5);
 }
 
 .btn-secondary:hover {
@@ -93,7 +93,7 @@ input[type="file"] {
   width: 100%;
   padding: 8px;
   background-color: #0f3460;
-  border: 1px solid #4cc9f0;
+  border: 1px solid #f04cac;
   border-radius: 4px;
   color: #e6e6e6;
 }
@@ -110,7 +110,7 @@ select {
 #visualization-area {
   grid-column: 2;
   grid-row: 1;
-  background-color: #16213e;
+  background-color: #5b80e4;
   padding: 20px;
   border-radius: 8px;
   display: flex;
@@ -121,10 +121,11 @@ select {
 #audioCanvas {
   width: 100%;
   height: 300px;
-  background-color: #0f3460;
+  background-color: #0f603d;
   border-radius: 4px;
 }
 
+/* Ativo/parado e nivel*/
 #audioInfo {
   margin-top: 15px;
   width: 100%;
@@ -133,29 +134,98 @@ select {
 }
 
 #properties-panel {
-  grid-column: 2;
-  grid-row: 2;
-  background-color: #16213e;
+  background-color: #f5f0f4;
   padding: 20px;
   border-radius: 8px;
+  color: #000;
+}
+#properties-panel h3 {
+  margin-top: -20px; /* valor negativo sobe o texto */
+}
+
+.columns-wrapper {
+  /*grid interna*/
+  display: grid;
+  grid-template-columns: 1fr 1fr; /*cria 2 colunas */
+  height: 200px; /* altura suficiente para subir/descer */
+  gap: 20px;
+}
+.col-direita .property-control-cor {
+  margin-bottom: 5px; /* aumenta espaço entre pickers */
 }
 
 .property-control {
-  margin-bottom: 15px;
+  margin-bottom: 5px; /*afasta-os uns dos outros*/
 }
 
 .property-control label {
   display: block;
   margin-bottom: 5px;
+  color: #000000;
+  font-size: 14px;
+  font-family: Arial, sans-serif;
 }
 
-.property-control input {
+.property-control-cor input {
   width: 100%;
   padding: 5px;
-  background-color: #0f3460;
+  background-color: #116bd8;
   border: 1px solid #4cc9f0;
   border-radius: 4px;
-  color: #e6e6e6;
+  color: #c64a4a;
+}
+.property-control-cor label {
+  color: #000000;
+  font-size: 14px;
+  font-family: Arial, sans-serif;
+}
+
+input[type="range"] {
+  width: 90%;
+  height: 6px;
+  background: #bfc8cb; /* cor da barra */
+  border-radius: 5px;
+}
+
+.property-control-grelha button {
+  padding: 4px 8px;
+  border-radius: 5px;
+  border: 1px solid #5a35f0;
+  background-color: #220984;
+  cursor: pointer;
+  margin-left: 10px;
+  color: #000000;
+  font-family: Arial, sans-serif;
+}
+
+.property-control-grelha button:hover {
+  background-color: #150775;
+}
+
+.property-control-grelha button:active {
+  background-color: #ccc;
+}
+
+.property-control-grelha label {
+  color: #000000;
+  font-size: 14px;
+  font-family: Arial, sans-serif;
+}
+
+.property-control-intensidade label {
+  color: #000000;
+  font-size: 14px;
+  margin-right: 10px;
+  font-family: Arial, sans-serif;
+}
+
+/*Por causa dos botoes e das suas labels:*/
+.property-control-grelha,
+.property-control-intensidade {
+  display: flex; /* flex horizontal */
+  flex-direction: row; /* garante que label e botão ficam lado a lado */
+  align-items: center; /* alinha verticalmente */
+  gap: 10px; /* espaço entre label e botão */
 }
 
 .modal {
@@ -164,7 +234,7 @@ select {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: #000000;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -190,23 +260,6 @@ select {
 
 .hidden {
   display: none;
-}
-
-.property-control-grelha button {
-  padding: 6px 12px;
-  border-radius: 5px;
-  border: 1px solid #333;
-  background-color: #eee;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-.property-control-grelha button:hover {
-  background-color: #ddd;
-}
-
-.property-control-grelha button:active {
-  background-color: #ccc;
 }
 
 @media (max-width: 768px) {

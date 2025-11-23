@@ -197,7 +197,6 @@ class UIManager {
 
   //no geral:
   createPropertyControl(property, value, min, max, step) {
-    // TODO: criar controlo de propriedade
     const container = $("<div>").addClass("property-control");
 
     const label = $("<label>").text(property).attr("for", `prop-${property}`);
@@ -226,7 +225,6 @@ class UIManager {
 
   //para cor:
   createColorPropertyControl(property) {
-    // TODO: criar controlo de propriedade
     const container = $("<div>").addClass("property-control-cor");
 
     const label = $("<label>").text(property).attr("for", `prop-${property}`);
@@ -251,7 +249,7 @@ class UIManager {
 
   createBackgroundColorPropertyControl(property) {
     // TODO: criar controlo de propriedade
-    const container = $("<div>").addClass("property-control-cor");
+    const container = $("<div>").addClass("property-control-fundo");
 
     const label = $("<label>").text(property).attr("for", `prop-${property}`);
 
@@ -314,7 +312,7 @@ class UIManager {
   }
 
   createIntensityPropertyControl(property, initialState) {
-    const container = $("<div>").addClass("property-control-itensidade");
+    const container = $("<div>").addClass("property-control-intensidade");
     const label = $("<label>").text(property).attr("for", `prop-${property}`);
     const button = $("<button>").text(initialState ? "OFF" : "ON");
 
