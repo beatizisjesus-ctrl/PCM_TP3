@@ -15,6 +15,9 @@ class UIManager {
     $("#properties-container-grelha").html("");
     $("#properties-container-sensibilidade").html("");
     $("#properties-container-intensidade").html("");
+    $("#properties-container-Radius").html("");
+    $("#properties-container-Distance").html("");
+    $("#properties-container-Count").html("");
     if (!this.visualizationEngine.currentVisualization) {
       console.warn(
         "Nenhuma visualização ativa — painel de propriedades vazio."
@@ -50,7 +53,7 @@ class UIManager {
       "Espectro de Frequências"
     ) {
       const bar_WidthScale = this.createPropertyControl(
-        "barWidthScale",
+        "BarWidthScale",
         3,
         1,
         6,
@@ -70,30 +73,30 @@ class UIManager {
       );
       $("#properties-container").append(bar_LengthScale);
     } else {
-      const particle_Radius = this.createPropertyControl(
+      const particle_Radius = this.createPropertyControlParticles(
         "particleRadius",
         5,
         2,
         10,
         1
       );
-      const connection_Distance = this.createPropertyControl(
+      const connection_Distance = this.createPropertyControlParticles(
         "connectionDistance",
         100,
         80,
         150,
         20
       );
-      const particle_Count = this.createPropertyControl(
+      const particle_Count = this.createPropertyControlParticles(
         "particleCount",
         50,
         2,
         100,
         5
       );
-      $("#properties-container").append(particle_Radius);
-      $("#properties-container").append(connection_Distance);
-      $("#properties-container").append(particle_Count);
+      $("#properties-container-Radius").append(particle_Radius);
+      $("#properties-container-Distance").append(connection_Distance);
+      $("#properties-container-Count").append(particle_Count);
       console.log("Atualizando painel de propriedades...");
     }
   }
@@ -195,7 +198,7 @@ class UIManager {
     update();
   }
 
-  //no geral:
+  //barWidthSacle e Sensitivity:
   createPropertyControl(property, value, min, max, step) {
     const container = $("<div>").addClass("property-control");
 
@@ -249,7 +252,7 @@ class UIManager {
 
   createBackgroundColorPropertyControl(property) {
     // TODO: criar controlo de propriedade
-    const container = $("<div>").addClass("property-control-fundo");
+    const container = $("<div>").addClass("property-control-cor");
 
     const label = $("<label>").text(property).attr("for", `prop-${property}`);
 
@@ -327,6 +330,33 @@ class UIManager {
     });
 
     container.append(label).append(button);
+    return container;
+  }
+
+  createPropertyControlParticles(property, value, min, max, step) {
+    const container = $("<div>").addClass("property-control-Particles");
+
+    const label = $("<label>").text(property).attr("for", `prop-${property}`);
+
+    const input = $("<input>")
+      .attr("type", "range")
+      .attr("id", `prop-${property}`);
+    input.attr({
+      min: min,
+      max: max,
+      step: step,
+      value: value,
+    });
+
+    input.on("input", (e) => {
+      this.visualizationEngine.updateVisualizationProperty(
+        property,
+        parseFloat(e.target.value)
+      );
+    });
+
+    container.append(label).append(input);
+
     return container;
   }
 }

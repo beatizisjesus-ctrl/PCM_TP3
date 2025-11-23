@@ -150,9 +150,6 @@ select {
   height: 200px; /* altura suficiente para subir/descer */
   gap: 20px;
 }
-.col-direita .property-control-cor {
-  margin-bottom: 5px; /* aumenta espaço entre pickers */
-}
 
 .property-control {
   margin-bottom: 5px; /*afasta-os uns dos outros*/
@@ -166,13 +163,19 @@ select {
   font-family: Arial, sans-serif;
 }
 
+.property-control-cor {
+  display: flex;
+  flex-direction: column; /* garante que label fique em cima */
+  gap: 5px; /* espaço entre label e picker */
+}
 .property-control-cor input {
-  width: 100%;
-  padding: 5px;
-  background-color: #116bd8;
-  border: 1px solid #4cc9f0;
-  border-radius: 4px;
-  color: #c64a4a;
+  width: 100px; /* largura do quadrado */
+  height: 30px; /* altura do quadrado */
+  padding: 0; /* remove padding interno */
+  border: 2px solid #4cc9f0; /* borda bonita */
+  border-radius: 6px; /* cantos levemente arredondados */
+  cursor: pointer; /* mostra mãozinha ao passar por cima */
+  appearance: none; /* remove estilo padrão do browser */
 }
 .property-control-cor label {
   color: #000000;
@@ -187,11 +190,19 @@ input[type="range"] {
   border-radius: 5px;
 }
 
+.property-control-grelha {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px; /* sobe ou desce o bloco conforme pretendido */
+}
+
 .property-control-grelha button {
   padding: 4px 8px;
   border-radius: 5px;
   border: 1px solid #5a35f0;
-  background-color: #220984;
+  background-color: #b7aaeb;
   cursor: pointer;
   margin-left: 10px;
   color: #000000;
@@ -226,6 +237,24 @@ input[type="range"] {
   flex-direction: row; /* garante que label e botão ficam lado a lado */
   align-items: center; /* alinha verticalmente */
   gap: 10px; /* espaço entre label e botão */
+}
+
+.property-control-intensidade {
+  display: flex; /* mantém label e botão lado a lado */
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  margin-top: 23px; /* ajusta para descer o bloco */
+}
+.property-control-intensidade button {
+  padding: 4px 8px;
+  border-radius: 5px;
+  border: 1px solid #5a35f0;
+  background-color: #b7aaeb;
+  cursor: pointer;
+  margin-left: 10px;
+  color: #000000;
+  font-family: Arial, sans-serif;
 }
 
 .modal {

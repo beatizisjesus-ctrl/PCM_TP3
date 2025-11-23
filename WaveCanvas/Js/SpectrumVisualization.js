@@ -4,7 +4,7 @@ class SpectrumVisualization extends AudioVisualization {
     this.name = "Espectro de Frequências";
     // Inicializar propriedades específicas
     this.properties = {
-      barWidthScale: 5,
+      BarWidthScale: 5,
     };
     this.createProperties("#ff0000", "Colors");
     this.createProperties(50, "ShowGrid");
@@ -23,7 +23,7 @@ class SpectrumVisualization extends AudioVisualization {
       ? this.audioProcessor.getFrequencyData()
       : this.testData;
 
-    const scale = this.properties.barWidthScale || 1;
+    const scale = this.properties.BarWidthScale || 1;
 
     const barWidth = (this.canvas.width / data.length) * scale;
 
