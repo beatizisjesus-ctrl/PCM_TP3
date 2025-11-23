@@ -9,7 +9,7 @@ class CircularVisualization extends AudioVisualization {
       speed: 0.05, //velocidade do circulo a girar
     };
     this.createProperties("#8000ff", "Colors");
-    this.createProperties(false, "ShowGrid");
+    this.createProperties(0, "ShowGrid");
     this.createProperties(50, "Background");
     this.createProperties(50, "Sensitivity");
     this.createProperties(50, "Intensity");

@@ -25,7 +25,7 @@ class UIManager {
       return;
     }
     //para todas as visualizações
-    const grelha = this.createGridPropertyControl("Showgrid", false);
+    const grelha = this.createGridPropertyControl("ShowGrid", false);
     $("#properties-container-grelha").append(grelha);
     const Cores = this.createColorPropertyControl("Colors");
     $("#properties-container-cor").append(Cores);
@@ -285,7 +285,7 @@ class UIManager {
       state = !state; // alterna o estado
       button.text(state ? "OFF" : "ON");
       // Atualiza no motor de visualização e agrelha de acordo com o estado do botao
-      this.visualizationEngine.currentVisualization.properties.Showgrid = state;
+      this.visualizationEngine.currentVisualization.properties.ShowGrid = state;
       this.visualizationEngine.updateVisualizationProperty(property, state);
     });
 
