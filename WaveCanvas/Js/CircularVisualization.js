@@ -2,18 +2,17 @@ class CircularVisualization extends AudioVisualization {
   constructor(canvas, audioProcessor) {
     super(canvas, audioProcessor);
     this.name = "Visualização Circular";
-    this.properties = {
-      baseRadius: 50, // raio base da esfera
-      amplitudeScale: 4, // quanto a esfera se expande com o áudio
-      waveFrequency: 0.3, // frequência da “onda” da esfera, numero de ondulaçoes ao longo do perimetro
-      speed: 0.05, //velocidade do circulo a girar
-    };
+
+    this.baseRadius = 50; // raio base da esfera
+    this.amplitudeScale = 4; // quanto a esfera se expande com o áudio
+    this.waveFrequency = 0.3; // frequência da “onda” da esfera, numero de ondulaçoes ao longo do perimetro
     this.createProperties("#8000ff", "Colors");
     this.createProperties(0, "ShowGrid");
     this.createProperties(50, "Background");
     this.createProperties(50, "Sensitivity");
     this.createProperties(50, "Intensity");
     this.createProperties(3, "BarLengthScale");
+    this.createProperties(0.01, "Speed");
 
     this.phase = 0; // fase da animação
   }
@@ -26,7 +25,7 @@ class CircularVisualization extends AudioVisualization {
 
     const data = this.audioProcessor
       ? this.audioProcessor.getFrequencyData()
-      : this.testData || Array.from({ length: 256 }, () => Math.random() * 255);
+      : this.testData;
 
     const ctx = this.ctx;
     const centerX = this.canvas.width / 2;
@@ -38,41 +37,40 @@ class CircularVisualization extends AudioVisualization {
     for (let i = 0; i < numPoints; i++) {
       const angle = (i / numPoints) * Math.PI * 2;
 
-      // obtém valor de áudio correspondente
+      // obtém valor de áudio correspondente:
+      //Temos 128 pontos no circulo mas 256 valores de áudio — então é preciso espalhar os valores uniformemente ao longo do círculo.
+      //Logo temos que ligar os 128 pontos aos 256 valores de áudio. Tansformamos um indice de 128 pontos para um indice
+      //de 256.
       const audioIndex = Math.floor((i / numPoints) * data.length);
+      /*Evita picos e deixa suave*/
       const valorAudio =
         (data[audioIndex] +
-          data[(audioIndex + 1) % data.length] +
+          data[(audioIndex + 1) % data.length] + //se for para o index 256 , a seguir volta para o index 0
           data[(audioIndex - 1 + data.length) % data.length]) /
         3 /
         255;
 
       // sensibilidade mapeada para 0.5 a 3
       const sensitivityFactor =
-        0.5 + (this.properties.BarLengthScale - 1) * 0.5; //para manter os valores visiveis, vai de 0.5 a 3
+        0.5 + (this.getProperties().BarLengthScale - 1) * 0.5; //para manter os valores visiveis, vai de 0.5 a 3
 
-      const barScale = 0.5 + (this.properties.BarLengthScale / 100) * 2; //vai de 0.5 a 2
+      const barScale = 0.5 + (this.getProperties().BarLengthScale / 100) * 2; //vai de 0.5 a 2
 
       // calcula o raio do ponto com base no áudio, sensibilidade e barScale
       let amplitude =
-        valorAudio *
-        this.properties.amplitudeScale *
-        this.properties.baseRadius *
-        sensitivityFactor;
+        valorAudio * this.amplitudeScale * this.baseRadius * sensitivityFactor;
       amplitude *= barScale;
 
-      const radius = this.properties.baseRadius + amplitude;
+      const radius = this.baseRadius + amplitude;
 
       // ondulação dinâmica proporcional ao raio base
       const waveOffset =
-        Math.sin(i * this.properties.waveFrequency + this.phase) *
-        this.properties.baseRadius *
-        0.1;
+        Math.sin(i * this.waveFrequency + this.phase) * this.baseRadius * 0.1;
 
       const finalRadius = radius + waveOffset;
 
-      const x = centerX + Math.cos(angle) * finalRadius;
-      const y = centerY + Math.sin(angle) * finalRadius;
+      const x = centerX + Math.cos(angle + this.phase) * finalRadius;
+      const y = centerY + Math.sin(angle + this.phase) * finalRadius;
 
       if (i === 0) ctx.moveTo(x, y);
       else ctx.lineTo(x, y);
@@ -81,7 +79,7 @@ class CircularVisualization extends AudioVisualization {
     ctx.closePath();
 
     // cor dinâmica ou fixa
-    if (this.properties.Intensity === true) {
+    if (this.getProperties().Intensity === true) {
       let level = this.audioProcessor
         ? this.audioProcessor.calculateAudioLevel()
         : 0.5;
@@ -99,8 +97,8 @@ class CircularVisualization extends AudioVisualization {
     ctx.lineWidth = 2;
     ctx.stroke();
 
-    // avança a fase para animar a esfera
-    this.phase += this.properties.speed;
+    // avança a fase para girar a esfera
+    this.phase += this.getProperties().Speed;
   }
 
   getProperties() {

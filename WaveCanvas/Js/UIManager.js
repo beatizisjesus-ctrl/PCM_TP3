@@ -72,6 +72,14 @@ class UIManager {
         0.01
       );
       $("#properties-container").append(bar_LengthScale);
+      const speed = this.createPropertyControl(
+        "Speed",
+        0.01,
+        0.005,
+        0.05,
+        0.002
+      );
+      $("#properties-container").append(speed);
     } else {
       const particle_Radius = this.createPropertyControlParticles(
         "particleRadius",
