@@ -173,7 +173,7 @@ class AudioProcessor {
 
   //gets:
   getFrequencyData() {
-    const sensitivity = Number(this.app.needSensitivity() ?? 50);
+    const sensitivity = this.app.needSensitivity();
     const arrayOriginal = new Uint8Array(this.frequencyData.length);
     for (let i = 0; i < this.frequencyData.length; i++) {
       let valores = this.frequencyData[i] * (sensitivity / 50); //se o valor for 50, vai ser 1
@@ -189,7 +189,7 @@ class AudioProcessor {
     //É necessário normalizar os valores, pois o centro(neutro) é 128, se multiplicarmo sisto pela sensibilidade sobe, por isso
     //coloca-se de -1 a 1, para se aplicar mais facilemnte a sensibilidade. Depois é necessario restaurar os valores originais, pois
     //o Uint8Array nao aceita valores negativos, or isso voltamos a por de 0 a 255;
-    const sensitivity = Number(this.app.needSensitivity() ?? 50);
+    const sensitivity = this.app.needSensitivity();
     const arrayOriginal = new Uint8Array(this.waveformData.length);
     for (let i = 0; i < this.waveformData.length; i++) {
       let valores = (this.waveformData[i] - 128) / 128; // normalizaçao (coloca de -1 a 1), o valor maximo sera 1

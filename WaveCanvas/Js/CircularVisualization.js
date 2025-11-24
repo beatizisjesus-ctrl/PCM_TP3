@@ -50,16 +50,16 @@ class CircularVisualization extends AudioVisualization {
         3 /
         255;
 
-      // sensibilidade mapeada para 0.5 a 3
-      const sensitivityFactor =
-        0.5 + (this.getProperties().BarLengthScale - 1) * 0.5; //para manter os valores visiveis, vai de 0.5 a 3
-
-      const barScale = 0.5 + (this.getProperties().BarLengthScale / 100) * 2; //vai de 0.5 a 2
+      // divide-se por 3 para nao ficar muito grande
+      const BarLengthScaleFactor = this.getProperties().BarLengthScale / 3;
+      //0.5 + (this.getProperties().BarLengthScale - 1) * 0.5;
 
       // calcula o raio do ponto com base no áudio, sensibilidade e barScale
       let amplitude =
-        valorAudio * this.amplitudeScale * this.baseRadius * sensitivityFactor;
-      amplitude *= barScale;
+        valorAudio *
+        this.amplitudeScale *
+        this.baseRadius *
+        BarLengthScaleFactor;
 
       const radius = this.baseRadius + amplitude;
 
